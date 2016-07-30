@@ -9,7 +9,8 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
-public interface ConfigurationContainer<T extends ConfigurationSection> extends ConfigurationSection {
+public interface ConfigurationContainer<T extends ConfigurationSection> extends ConfigurationSection
+{
 
     public void set(PathContainer path, Object value);
 

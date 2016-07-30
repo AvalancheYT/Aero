@@ -30,7 +30,8 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 /**
  * Represents the Aero framework.
  */
-public class Aero {
+public class Aero
+{
 
     /**
      * The name of this library.
@@ -40,6 +41,10 @@ public class Aero {
      * The author of this library.
      */
     public static final String AUTHOR = "Prozza";
+    /**
+     * The builder of this library.
+     */
+    public static final String BUILD_NAME = "_Radiation";
 
     private final AeroContainer plugin;
     private final Logger logger;
@@ -48,7 +53,8 @@ public class Aero {
     private boolean debug = false;
     private boolean init = false;
 
-    public Aero(AeroContainer plugin) {
+    public Aero(AeroContainer plugin)
+    {
         // Note: created at constructor time, plugin is not complete yet
         this.plugin = plugin;
         this.logger = plugin.getLogger();
@@ -58,17 +64,22 @@ public class Aero {
     /**
      * Initializes this framework.
      */
-    public void init() {
-        if (init) {
+    public void init()
+    {
+        if (init)
+        {
             throw new AeroException("Framework already initialized!");
         }
 
         this.init = true;
         logger.info(NAME + " v" + getFullVersion() + " by " + AUTHOR + " initialized");
+        logger.info(NAME + " has been worked on later by " + BUILD_NAME);
     }
 
-    public void deinit() {
-        if (!init) {
+    public void deinit()
+    {
+        if (!init)
+        {
             throw new AeroException("Framework not initialized!");
         }
 
@@ -82,7 +93,8 @@ public class Aero {
      *
      * @return True if the framework has been initialized.
      */
-    public boolean isInitialized() {
+    public boolean isInitialized()
+    {
         return init;
     }
 
@@ -92,28 +104,33 @@ public class Aero {
      * @param plugin The plugin to register.
      * @return The options for this plugin.
      */
-    public RegisteredPlugin register(AeroPlugin<?> plugin) {
+    public RegisteredPlugin register(AeroPlugin<?> plugin)
+    {
         verifyInitialized();
 
-        if (plugin == null) {
+        if (plugin == null)
+        {
             throw new IllegalArgumentException("Plugin is null.");
         }
 
         final String key = getPluginKey(plugin);
 
-        if (plugins.containsKey(key)) {
+        if (plugins.containsKey(key))
+        {
             throw new AeroException("Plugin already registered!");
         }
 
         final PluginDescriptionFile pdf = plugin.getDescription();
 
         if (pdf.getVersion() == null
-                || pdf.getVersion().isEmpty()) {
+                || pdf.getVersion().isEmpty())
+        {
             throw new AeroException("Incomplete plugin description file: Missing version number!");
         }
 
         if (pdf.getAuthors() == null
-                || pdf.getAuthors().isEmpty()) {
+                || pdf.getAuthors().isEmpty())
+        {
             throw new AeroException("Incomplete plugin description file: Missing author!");
         }
 
@@ -123,16 +140,19 @@ public class Aero {
         return options;
     }
 
-    public void unregister(AeroPlugin<?> plugin) {
+    public void unregister(AeroPlugin<?> plugin)
+    {
         verifyInitialized();
 
-        if (plugin == null) {
+        if (plugin == null)
+        {
             throw new IllegalArgumentException();
         }
 
         final String key = getPluginKey(plugin);
 
-        if (plugins.remove(key) == null) {
+        if (plugins.remove(key) == null)
+        {
             throw new AeroException("Plugin not registered!");
         }
     }
@@ -143,7 +163,8 @@ public class Aero {
      * @param plugin The plugin for which to obtain the registered plugin.
      * @return The registered plugin.
      */
-    public RegisteredPlugin getRegisteredPlugin(Plugin plugin) {
+    public RegisteredPlugin getRegisteredPlugin(Plugin plugin)
+    {
         verifyInitialized();
         return plugins.get(getPluginKey(plugin));
     }
@@ -153,7 +174,8 @@ public class Aero {
      *
      * @return The set.
      */
-    public Set<RegisteredPlugin> getRegisteredPlugins() {
+    public Set<RegisteredPlugin> getRegisteredPlugins()
+    {
         verifyInitialized();
         return new HashSet<RegisteredPlugin>(plugins.values());
     }
@@ -163,7 +185,8 @@ public class Aero {
      *
      * @return The version of this Platform.
      */
-    public String getVersion() {
+    public String getVersion()
+    {
         return plugin.getBuildVersion();
     }
 
@@ -172,16 +195,19 @@ public class Aero {
      *
      * @return The build number.
      */
-    public String getBuildNumber() {
+    public String getBuildNumber()
+    {
         return plugin.getBuildNumber();
     }
 
     /**
-     * Returns the full framework version in the <b>major.minor.build</b> format.
+     * Returns the full framework version in the <b>major.minor.build</b>
+     * format.
      *
      * @return The version.
      */
-    public String getFullVersion() {
+    public String getFullVersion()
+    {
         return plugin.getBuildVersion() + "." + plugin.getBuildNumber();
     }
 
@@ -190,7 +216,8 @@ public class Aero {
      *
      * @return The date
      */
-    public String getBuildDate() {
+    public String getBuildDate()
+    {
         return plugin.getBuildDate();
     }
 
@@ -198,12 +225,15 @@ public class Aero {
      * Explicitly enables debug mode.
      *
      * <p>
-     * <b>Note</b>: Debug should never be left enabled when releasing your plugin.</p>
+     * <b>Note</b>: Debug should never be left enabled when releasing your
+     * plugin.</p>
      */
-    public void explicitEnableDebugging() {
+    public void explicitEnableDebugging()
+    {
         verifyInitialized();
 
-        if (debug) {
+        if (debug)
+        {
             logger.warning("Attempted to enabled debug mode twice!");
             return;
         }
@@ -219,17 +249,21 @@ public class Aero {
      *
      * @return True if debug mode is enabled
      */
-    public boolean isDebugging() {
+    public boolean isDebugging()
+    {
         return debug;
     }
 
-    private void verifyInitialized() {
-        if (!init) {
+    private void verifyInitialized()
+    {
+        if (!init)
+        {
             throw new AeroUninitializedException();
         }
     }
 
-    private String getPluginKey(Plugin plugin) {
+    private String getPluginKey(Plugin plugin)
+    {
         return plugin.getName().toLowerCase().replace(" ", "");
     }
 
@@ -237,18 +271,22 @@ public class Aero {
      * Obtains the framework instance running on this platform.
      *
      * @return The framework.
-     * @throws AeroException If this method is called before the framework has been initialized.
+     * @throws AeroException If this method is called before the framework has
+     * been initialized.
      */
-    public static Aero getInstance() {
+    public static Aero getInstance()
+    {
         RegisteredServiceProvider<AeroContainer> container = Bukkit.getServicesManager().getRegistration(AeroContainer.class);
 
-        if (container == null) {
+        if (container == null)
+        {
             throw new AeroException("Could not find " + NAME + "!");
         }
 
         final Aero aero = container.getProvider().getAero();
 
-        if (aero == null) {
+        if (aero == null)
+        {
             throw new AeroUninitializedException("Aero is null!");
         }
 

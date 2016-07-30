@@ -15,15 +15,18 @@
  */
 package net.pravian.aero.exception;
 
-public abstract class AbstractExceptionHandler implements ExceptionHandler {
+public abstract class AbstractExceptionHandler implements ExceptionHandler
+{
 
     @Override
-    public void handleException(String msg) {
+    public void handleException(String msg)
+    {
         handleException(msg, null);
     }
 
     @Override
-    public void handleException(Throwable ex) {
+    public void handleException(Throwable ex)
+    {
         handleException(null, ex);
     }
 

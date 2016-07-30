@@ -25,30 +25,39 @@ import org.bukkit.plugin.PluginManager;
 /**
  * Represents all File-related utilities.
  */
-public class Plugins {
+public class Plugins
+{
 
-    private Plugins() {
+    private Plugins()
+    {
     }
 
-    public static Plugin getPlugin(String name) {
+    public static Plugin getPlugin(String name)
+    {
         name = name.toLowerCase();
 
         PluginManager pm = Bukkit.getPluginManager();
         Plugin plugin = pm.getPlugin(name);
 
         Plugin[] plugins = pm.getPlugins();
-        if (plugin == null) {
-            for (Plugin loopPlugin : plugins) {
-                if (loopPlugin.getName().toLowerCase().equalsIgnoreCase(name)) {
+        if (plugin == null)
+        {
+            for (Plugin loopPlugin : plugins)
+            {
+                if (loopPlugin.getName().toLowerCase().equalsIgnoreCase(name))
+                {
                     plugin = loopPlugin;
                     break;
                 }
             }
         }
 
-        if (plugin == null) {
-            for (Plugin loopPlugin : plugins) {
-                if (loopPlugin.getName().toLowerCase().startsWith(name)) {
+        if (plugin == null)
+        {
+            for (Plugin loopPlugin : plugins)
+            {
+                if (loopPlugin.getName().toLowerCase().startsWith(name))
+                {
                     plugin = loopPlugin;
                     break;
                 }
@@ -66,8 +75,11 @@ public class Plugins {
      *
      * @see #disableAllPlugins(List)
      */
-    public static void disableAllPlugins() {
-        disableAllPlugins(Arrays.asList(new Plugin[]{}));
+    public static void disableAllPlugins()
+    {
+        disableAllPlugins(Arrays.asList(new Plugin[]
+        {
+        }));
     }
 
     /**
@@ -76,8 +88,12 @@ public class Plugins {
      * @param ignore Plugin to ignore.
      * @see #disableAllPlugins(List)
      */
-    public static void disableAllPlugins(Plugin ignore) {
-        disableAllPlugins(Arrays.asList(new Plugin[]{ignore}));
+    public static void disableAllPlugins(Plugin ignore)
+    {
+        disableAllPlugins(Arrays.asList(new Plugin[]
+        {
+            ignore
+        }));
     }
 
     /**
@@ -85,9 +101,12 @@ public class Plugins {
      *
      * @param ignoreList The list of ignored plugins.
      */
-    public static void disableAllPlugins(List<Plugin> ignoreList) {
-        for (Plugin plugin : Bukkit.getPluginManager().getPlugins()) {
-            if (!ignoreList.contains(plugin)) {
+    public static void disableAllPlugins(List<Plugin> ignoreList)
+    {
+        for (Plugin plugin : Bukkit.getPluginManager().getPlugins())
+        {
+            if (!ignoreList.contains(plugin))
+            {
                 Bukkit.getPluginManager().disablePlugin(plugin);
             }
         }
@@ -96,8 +115,10 @@ public class Plugins {
     /**
      * Enables all plugins.
      */
-    public static void enableAllPlugins() {
-        for (Plugin plugin : Bukkit.getPluginManager().getPlugins()) {
+    public static void enableAllPlugins()
+    {
+        for (Plugin plugin : Bukkit.getPluginManager().getPlugins())
+        {
             Bukkit.getPluginManager().enablePlugin(plugin);
         }
     }
@@ -110,7 +131,8 @@ public class Plugins {
      * @throws InvalidPluginException
      * @throws InvalidDescriptionException
      */
-    public static void loadPlugin(String fileName) throws InvalidPluginException, InvalidDescriptionException {
+    public static void loadPlugin(String fileName) throws InvalidPluginException, InvalidDescriptionException
+    {
         loadPlugin(new File(Plugins.getPluginsFolder(), fileName));
     }
 
@@ -121,7 +143,8 @@ public class Plugins {
      * @throws InvalidPluginException
      * @throws InvalidDescriptionException
      */
-    public static void loadPlugin(File plugin) throws InvalidPluginException, InvalidDescriptionException {
+    public static void loadPlugin(File plugin) throws InvalidPluginException, InvalidDescriptionException
+    {
         Bukkit.getPluginManager().loadPlugin(plugin);
     }
 
@@ -130,19 +153,22 @@ public class Plugins {
      *
      * @param plugin The plugin to reload.
      */
-    public static void reloadPlugin(Plugin plugin) {
+    public static void reloadPlugin(Plugin plugin)
+    {
         Bukkit.getPluginManager().disablePlugin(plugin);
         Bukkit.getPluginManager().enablePlugin(plugin);
     }
 
     /**
-     * Downloads a file from the specified URL and saves it at the specified location.
+     * Downloads a file from the specified URL and saves it at the specified
+     * location.
      *
      * @param url The URL from where to download the file from.
      * @param output The file where the file will be stored.
      * @throws MalformedURLException @throws IOException
      */
-    public static void downloadFile(String url, File output) throws MalformedURLException, IOException {
+    public static void downloadFile(String url, File output) throws MalformedURLException, IOException
+    {
         final URL website = new URL(url);
         final ReadableByteChannel rbc = Channels.newChannel(website.openStream());
         final FileOutputStream fos = new FileOutputStream(output);
@@ -157,8 +183,10 @@ public class Plugins {
      * @param file The file where the object will be stored.
      * @throws IOException
      */
-    public static void saveObject(Object object, File file) throws IOException {
-        if (!file.exists()) {
+    public static void saveObject(Object object, File file) throws IOException
+    {
+        if (!file.exists())
+        {
             file.getParentFile().mkdirs();
         }
 
@@ -173,8 +201,10 @@ public class Plugins {
      * @param file The file where the object is stored.
      * @throws IOException
      */
-    public static Object loadObject(File file) throws IOException, ClassNotFoundException {
-        if (!file.exists()) {
+    public static Object loadObject(File file) throws IOException, ClassNotFoundException
+    {
+        if (!file.exists())
+        {
             throw new IllegalStateException();
         }
 
@@ -192,7 +222,8 @@ public class Plugins {
      * @param name The name of the file.
      * @return The requested file.
      */
-    public static File getPluginFile(Plugin plugin, String name) {
+    public static File getPluginFile(Plugin plugin, String name)
+    {
         return new File(plugin.getDataFolder(), name);
     }
 
@@ -201,12 +232,14 @@ public class Plugins {
      *
      * @return The current working directory.
      */
-    public static File getRoot() {
+    public static File getRoot()
+    {
         return new File(".");
     }
 
     /**
-     * Gets the Jar File where a given Plugin is loaded from. If the plugin is not in a Jar file, null is returned instead.
+     * Gets the Jar File where a given Plugin is loaded from. If the plugin is
+     * not in a Jar file, null is returned instead.
      *
      * <p>
      * Author: bergerkiller</p>
@@ -214,15 +247,20 @@ public class Plugins {
      * @param plugin to get the Jar File of
      * @return the Jar File in which the plugin resides, or null if none found
      */
-    public static File getPluginJarFile(AeroPlugin plugin) {
+    public static File getPluginJarFile(AeroPlugin plugin)
+    {
         final Class<?> pluginClass = plugin.getClass();
-        try {
+        try
+        {
             URI uri = pluginClass.getProtectionDomain().getCodeSource().getLocation().toURI();
             File file = new File(uri);
-            if (file.exists()) {
+            if (file.exists())
+            {
                 return file;
             }
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             plugin.handleException("Could not get plugin Jar file!", ex);
         }
         return null;
@@ -231,7 +269,8 @@ public class Plugins {
     /**
      * Obtains the folder in which plugin-specific information is contained.<br>
      * Usually this folder is <b>/plugins/[pluginname]</b>.<br>
-     * This method can be used to properly obtain this folder if the plugin is not initialized yet.
+     * This method can be used to properly obtain this folder if the plugin is
+     * not initialized yet.
      *
      * <p>
      * Author: bergerkiller</p>
@@ -239,11 +278,14 @@ public class Plugins {
      * @param plugin to get the data folder of
      * @return Plugin data folder (never null)
      */
-    public static File getPluginDataFolder(AeroPlugin plugin) {
+    public static File getPluginDataFolder(AeroPlugin plugin)
+    {
         File folder = plugin.getDataFolder();
-        if (folder == null) {
+        if (folder == null)
+        {
             File jarFile = getPluginJarFile(plugin);
-            if (jarFile == null) {
+            if (jarFile == null)
+            {
                 throw new RuntimeException("Plugin data folder can not be obtained: Not a valid JAR plugin");
             }
             folder = new File(jarFile.getAbsoluteFile().getParentFile(), plugin.getName());
@@ -256,7 +298,8 @@ public class Plugins {
      *
      * @return The plugins folder.
      */
-    public static File getPluginsFolder() {
+    public static File getPluginsFolder()
+    {
         return new File(getRoot(), "plugins");
     }
 
@@ -266,7 +309,8 @@ public class Plugins {
      * @param name The name of the file.
      * @return The requested file.
      */
-    public static File getRootFile(String name) {
+    public static File getRootFile(String name)
+    {
         return new File(getRoot(), name);
     }
 
@@ -279,8 +323,10 @@ public class Plugins {
      * @param file The folder to delete.
      * @return true if the delete was successful.
      */
-    public static boolean deleteFolder(File file) {
-        if (file.exists() && file.isDirectory()) {
+    public static boolean deleteFolder(File file)
+    {
+        if (file.exists() && file.isDirectory())
+        {
             return Plugins.deleteFolder(file);
         }
         return false;
@@ -293,15 +339,18 @@ public class Plugins {
      * @param file The File to write to.
      * @throws IOException
      */
-    public static void copy(InputStream in, File file) throws IOException {
-        if (!file.exists()) {
+    public static void copy(InputStream in, File file) throws IOException
+    {
+        if (!file.exists())
+        {
             file.getParentFile().mkdirs();
         }
 
         OutputStream out = new FileOutputStream(file);
         byte[] buf = new byte[1024];
         int len;
-        while ((len = in.read(buf)) > 0) {
+        while ((len = in.read(buf)) > 0)
+        {
             out.write(buf, 0, len);
         }
         out.close();

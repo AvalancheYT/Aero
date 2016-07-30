@@ -21,7 +21,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.command.TabExecutor;
 
-public interface AeroCommandExecutor<C extends AeroCommandBase<?>> extends TabExecutor {
+public interface AeroCommandExecutor<C extends AeroCommandBase<?>> extends TabExecutor
+{
 
     public String getName();
 

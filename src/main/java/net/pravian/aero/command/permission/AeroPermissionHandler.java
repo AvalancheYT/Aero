@@ -18,7 +18,8 @@ package net.pravian.aero.command.permission;
 import java.util.Set;
 import net.pravian.aero.command.AeroCommandBase;
 
-public interface AeroPermissionHandler {
+public interface AeroPermissionHandler
+{
 
     public Set<String> getPermissions(Class<? extends AeroCommandBase<?>> command);
 

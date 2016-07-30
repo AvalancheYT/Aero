@@ -2,7 +2,8 @@ package net.pravian.aero;
 
 import net.pravian.aero.plugin.AeroPlugin;
 
-public class RegisteredPlugin {
+public class RegisteredPlugin
+{
 
     private final AeroPlugin<?> plugin;
     private final Aero aero;
@@ -10,7 +11,8 @@ public class RegisteredPlugin {
     private boolean metrics = true;
     private boolean throwExceptions = false;
 
-    protected RegisteredPlugin(AeroPlugin<?> plugin) {
+    protected RegisteredPlugin(AeroPlugin<?> plugin)
+    {
         this.plugin = plugin;
         this.aero = plugin.getAero();
     }
@@ -20,7 +22,8 @@ public class RegisteredPlugin {
      *
      * @return The plugin.
      */
-    public final AeroPlugin<?> getPlugin() {
+    public final AeroPlugin<?> getPlugin()
+    {
         return plugin;
     }
 
@@ -33,7 +36,8 @@ public class RegisteredPlugin {
      * @return This options instance.
      * @see <a href="http://mcstats.org">http://mcstats.org</a>a
      */
-    public RegisteredPlugin explicitDisableMetrics() {
+    public RegisteredPlugin explicitDisableMetrics()
+    {
         this.metrics = false;
         return this;
     }
@@ -43,7 +47,8 @@ public class RegisteredPlugin {
      *
      * @return This options instance.
      */
-    public RegisteredPlugin explicitEnableExceptionThrowing() {
+    public RegisteredPlugin explicitEnableExceptionThrowing()
+    {
         this.throwExceptions = true;
         return this;
     }
@@ -54,7 +59,8 @@ public class RegisteredPlugin {
      * @return True if metrics are enabled.
      * @see <a href="http://mcstats.org">http://mcstats.org</a>
      */
-    public boolean metricsEnabled() {
+    public boolean metricsEnabled()
+    {
         return metrics;
     }
 
@@ -63,17 +69,21 @@ public class RegisteredPlugin {
      *
      * @return True if exception throwing is enabled.
      */
-    public boolean doesThrowExceptions() {
+    public boolean doesThrowExceptions()
+    {
         return throwExceptions;
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
+    public boolean equals(Object obj)
+    {
+        if (obj == null)
+        {
             return false;
         }
 
-        if (!(obj instanceof RegisteredPlugin)) {
+        if (!(obj instanceof RegisteredPlugin))
+        {
             return false;
         }
 
@@ -81,7 +91,8 @@ public class RegisteredPlugin {
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         int hash = 5;
         hash = 29 * hash + (this.plugin != null ? this.plugin.hashCode() : 0);
         return hash;

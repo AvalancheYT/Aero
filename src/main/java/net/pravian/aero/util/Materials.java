@@ -5,7 +5,8 @@ import java.util.Set;
 import org.bukkit.Material;
 
 @SuppressWarnings("deprecation")
-public class Materials {
+public class Materials
+{
 
     /**
      * <p>
@@ -13,7 +14,8 @@ public class Materials {
      */
     protected static final HashSet<Byte> TRANSPARENT_MATERIALS = new HashSet<Byte>();
 
-    static {
+    static
+    {
         final HashSet<Integer> MATERIALS = new HashSet<Integer>();
         MATERIALS.add(Material.AIR.getId());
         MATERIALS.add(Material.SAPLING.getId());
@@ -56,15 +58,19 @@ public class Materials {
         try // 1.6 update
         {
             MATERIALS.add(Material.CARPET.getId());
-        } catch (NoSuchFieldError e) {
+        }
+        catch (NoSuchFieldError e)
+        {
         }
 
-        for (Integer integer : MATERIALS) {
+        for (Integer integer : MATERIALS)
+        {
             TRANSPARENT_MATERIALS.add(integer.byteValue());
         }
     }
 
-    private Materials() {
+    private Materials()
+    {
     }
 
     /**
@@ -72,10 +78,12 @@ public class Materials {
      *
      * @return the materials
      */
-    public static Set<Material> getTransparentMaterials() {
+    public static Set<Material> getTransparentMaterials()
+    {
         final Set<Material> materials = new HashSet<Material>();
 
-        for (Byte material : TRANSPARENT_MATERIALS) {
+        for (Byte material : TRANSPARENT_MATERIALS)
+        {
             materials.add(Material.getMaterial(material));
         }
 

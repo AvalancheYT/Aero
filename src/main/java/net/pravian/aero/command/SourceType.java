@@ -25,7 +25,8 @@ import org.bukkit.entity.Player;
 /**
  * Represents the different sources a command execution might originate from.
  */
-public enum SourceType {
+public enum SourceType
+{
 
     // Generic source types
     ANY,
@@ -37,44 +38,54 @@ public enum SourceType {
     BLOCK,
     RCON;
 
-    public boolean isPlayer() {
+    public boolean isPlayer()
+    {
         return this == PLAYER;
     }
 
-    public boolean isPrivileged() {
+    public boolean isPrivileged()
+    {
         return this != PLAYER;
     }
 
-    public boolean isGeneric() {
+    public boolean isGeneric()
+    {
         return this == NON_PLAYER || this == ANY;
     }
 
-    public boolean matches(CommandSender sender) {
+    public boolean matches(CommandSender sender)
+    {
         Validate.notNull(sender, "Sender may not be null");
 
-        if (this == ANY) {
+        if (this == ANY)
+        {
             return true;
         }
 
         // Filter out players first
-        if (sender instanceof Player) {
+        if (sender instanceof Player)
+        {
             return this == PLAYER;
         }
 
         // All non-player below here
-        if (this == NON_PLAYER) {
+        if (this == NON_PLAYER)
+        {
             return true;
         }
 
-        if (sender instanceof RemoteConsoleCommandSender) {
+        if (sender instanceof RemoteConsoleCommandSender)
+        {
             return this == RCON;
         }
 
-        if (sender instanceof BlockCommandSender) {
+        if (sender instanceof BlockCommandSender)
+        {
             return this == BLOCK;
         }
 
-        if (sender instanceof ConsoleCommandSender) {
+        if (sender instanceof ConsoleCommandSender)
+        {
             return this == CONSOLE;
         }
 
@@ -82,20 +93,25 @@ public enum SourceType {
         return true;
     }
 
-    public static SourceType fromSender(CommandSender sender) {
-        if (sender instanceof Player) {
+    public static SourceType fromSender(CommandSender sender)
+    {
+        if (sender instanceof Player)
+        {
             return PLAYER;
         }
 
-        if (sender instanceof RemoteConsoleCommandSender) {
+        if (sender instanceof RemoteConsoleCommandSender)
+        {
             return RCON;
         }
 
-        if (sender instanceof BlockCommandSender) {
+        if (sender instanceof BlockCommandSender)
+        {
             return BLOCK;
         }
 
-        if (sender instanceof ConsoleCommandSender) {
+        if (sender instanceof ConsoleCommandSender)
+        {
             return CONSOLE;
         }
 

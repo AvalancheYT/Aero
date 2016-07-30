@@ -1,5 +1,5 @@
 name: Aero
 version: ${app.buildversion}
-authors: [Prozza]
+authors: [Prozza, _Radiation]
 main: net.pravian.aero.internal.AeroBukkit
 load: STARTUP

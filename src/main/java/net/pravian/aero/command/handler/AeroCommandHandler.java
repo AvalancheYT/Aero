@@ -23,7 +23,8 @@ import net.pravian.aero.command.permission.AeroPermissionHandler;
 import net.pravian.aero.plugin.AeroPlugin;
 import org.bukkit.command.PluginCommand;
 
-public interface AeroCommandHandler<T extends AeroPlugin<T>> {
+public interface AeroCommandHandler<T extends AeroPlugin<T>>
+{
 
     public T getPlugin();
 

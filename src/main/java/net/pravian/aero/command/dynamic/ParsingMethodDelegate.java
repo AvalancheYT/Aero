@@ -32,7 +32,8 @@ import org.bukkit.command.CommandSender;
 
 // Package-private: only for internal use
 // TODO: docs
-class ParsingMethodDelegate<T extends AeroPlugin<T>> implements CommandExecutor {
+class ParsingMethodDelegate<T extends AeroPlugin<T>> implements CommandExecutor
+{
 
     private final AeroCommandBase<T> aeroCommand;
     private final AeroCommandHandler<T> handler;
@@ -40,7 +41,8 @@ class ParsingMethodDelegate<T extends AeroPlugin<T>> implements CommandExecutor 
     private final Method method;
     private final List<Parser<?>> parsers = new ArrayList<Parser<?>>();
 
-    ParsingMethodDelegate(SimpleCommand<T> command, CommandOptions options, Method method, List<Parser<?>> parsers) {
+    ParsingMethodDelegate(SimpleCommand<T> command, CommandOptions options, Method method, List<Parser<?>> parsers)
+    {
         this.aeroCommand = command;
         this.handler = command.getHandler();
         this.options = options;
@@ -48,32 +50,42 @@ class ParsingMethodDelegate<T extends AeroPlugin<T>> implements CommandExecutor 
         this.parsers.addAll(parsers);
     }
 
-    public CommandOptions getOptions() {
+    public CommandOptions getOptions()
+    {
         return options;
     }
 
-    public List<Parser<?>> getParsers() {
+    public List<Parser<?>> getParsers()
+    {
         return Collections.unmodifiableList(parsers);
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) throws ParseException, ExecutionException {
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) throws ParseException, ExecutionException
+    {
 
         // Parse arguments
         final List<Object> pArgs = new ArrayList<Object>();
         int offset = 0;
-        for (Parser<?> parser : parsers) {
+        for (Parser<?> parser : parsers)
+        {
             if (pArgs.size() >= parsers.size() // Too many arguments parsed
-                    || offset >= args.length) { // Too many parsers for arguments
+                    || offset >= args.length)
+            { // Too many parsers for arguments
                 return false; // TODO: Allow parsers to parse multiple arguments?
             }
 
-            try {
+            try
+            {
                 offset = parser.parse(pArgs, args, offset);
-            } catch (ParseException pex) {
+            }
+            catch (ParseException pex)
+            {
                 throw pex;
-            } catch (Exception ex) {
+            }
+            catch (Exception ex)
+            {
                 throw new ParseException(ex.getMessage() != null ? ex.getMessage() : "Could not parse argument: " + args[offset], ex);
             }
         }
@@ -81,9 +93,12 @@ class ParsingMethodDelegate<T extends AeroPlugin<T>> implements CommandExecutor 
         // Debug
         assert method.getParameterTypes().length == pArgs.size(); // All parameters are satisfied
 
-        try {
+        try
+        {
             return (Boolean) method.invoke(aeroCommand, pArgs.toArray());
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             throw new ExecutionException(ex);
         }
     }

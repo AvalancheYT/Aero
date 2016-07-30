@@ -24,14 +24,20 @@ import java.lang.annotation.Target;
 // TODO docs
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.TYPE, ElementType.METHOD})
-public @interface CommandOptions {
+@Target(
+{
+    ElementType.TYPE, ElementType.METHOD
+})
+public @interface CommandOptions
+{
 
     public String usage() default "";
 
     public SourceType source() default SourceType.ANY;
 
-    public SourceType[] sources() default {};
+    public SourceType[] sources() default 
+    {
+    };
 
     public String permission() default "";
 

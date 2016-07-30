@@ -41,13 +41,15 @@ import org.bukkit.command.CommandSender;
  * @param <T> Optional: Type safety for {@link #plugin}
  */
 @Deprecated
-public abstract class DynamicCommand<T extends AeroPlugin<T>> extends SimpleCommand<T> implements CommandExecutor {
+public abstract class DynamicCommand<T extends AeroPlugin<T>> extends SimpleCommand<T> implements CommandExecutor
+{
 
     private final List<ParsingMethodDelegate<?>> delegates = Lists.newArrayList();
     private final Map<Class<?>, Parser<?>> argumentParsers = Maps.newHashMap();
     //
 
-    protected DynamicCommand() {
+    protected DynamicCommand()
+    {
     }
 
     /**
@@ -63,17 +65,26 @@ public abstract class DynamicCommand<T extends AeroPlugin<T>> extends SimpleComm
      * @return true/false depending if the command executed successfully.
      */
     @Override
-    public final boolean onCommand(final CommandSender sender, final Command command, final String label, final String[] args) {
+    public final boolean onCommand(final CommandSender sender, final Command command, final String label, final String[] args)
+    {
 
         // Tricky loops and exceptions 8D
-        for (ParsingMethodDelegate<?> delegate : delegates) {
-            try {
+        for (ParsingMethodDelegate<?> delegate : delegates)
+        {
+            try
+            {
                 return delegate.onCommand(sender, command, label, args);
-            } catch (ParseException ignored) { // TODO: Something something
+            }
+            catch (ParseException ignored)
+            { // TODO: Something something
                 continue;
-            } catch (ExecutionException ex) {
+            }
+            catch (ExecutionException ex)
+            {
                 throw ex.getCause(); //
-            } catch (Exception ex) {
+            }
+            catch (Exception ex)
+            {
                 plugin.handleException("Uncaught DynamicCommand exception whilst executing command: " + command.getName(), ex);
                 sender.sendMessage(ChatColor.RED + "Command Error: " + command.getName());
             }
@@ -86,32 +97,40 @@ public abstract class DynamicCommand<T extends AeroPlugin<T>> extends SimpleComm
     }
 
     @Override
-    public void unregister() {
+    public void unregister()
+    {
         super.unregister();
         delegates.clear();
     }
 
     // Should load command stuff
     @Override
-    public void register(SimpleCommandHandler<T> handler) throws CommandRegistrationException {
+    public void register(SimpleCommandHandler<T> handler) throws CommandRegistrationException
+    {
         super.register(handler);
 
         // Find command methods
         delegates.clear();
-        for (Method method : getClass().getMethods()) {
+        for (Method method : getClass().getMethods())
+        {
             CommandOptions options = method.getAnnotation(CommandOptions.class);
-            if (options == null) {
+            if (options == null)
+            {
                 continue;
             }
 
-            if (method.getReturnType() != boolean.class && method.getReturnType() != Boolean.class) {
+            if (method.getReturnType() != boolean.class && method.getReturnType() != Boolean.class)
+            {
                 logger.severe("Could not register command method: " + method.getName() + ". Method does not return valid type (boolean)!");
                 continue;
             }
 
-            try {
+            try
+            {
                 registerDelegate(method, options);
-            } catch (Exception ex) {
+            }
+            catch (Exception ex)
+            {
                 logger.severe("Could not register command method: " + method.getName());
                 logger.severe(ex);
             }
@@ -119,49 +138,62 @@ public abstract class DynamicCommand<T extends AeroPlugin<T>> extends SimpleComm
 
     }
 
-    public void registerArgumentParser(Class<?> superType, Parser<?> parser) {
+    public void registerArgumentParser(Class<?> superType, Parser<?> parser)
+    {
         argumentParsers.put(superType, parser);
     }
 
-    public Map<Class<?>, Parser<?>> getArgumentParsers() {
+    public Map<Class<?>, Parser<?>> getArgumentParsers()
+    {
         return argumentParsers;
     }
 
     // TODO: Docs docs docs
-    protected void registerDelegate(Method method, CommandOptions options) {
+    protected void registerDelegate(Method method, CommandOptions options)
+    {
         final List<Parser<?>> parsers = new ArrayList<Parser<?>>();
 
         // Determine parsers
-        for (Class<?> type : method.getParameterTypes()) {
+        for (Class<?> type : method.getParameterTypes())
+        {
 
             Parser parser = null;
 
             // Custom parser
             final CustomParser parserAnn = type.getAnnotation(CustomParser.class);
-            if (parserAnn != null) {
-                try {
+            if (parserAnn != null)
+            {
+                try
+                {
                     parser = parserAnn.value().newInstance();
-                } catch (Exception ex) {
+                }
+                catch (Exception ex)
+                {
                     throw new IllegalArgumentException("Could not instantiate custom parser class with zero-argument constructor: " + parserAnn.value().getName(), ex);
                 }
             }
 
             // Registered parsers
-            if (parser == null) {
-                for (Class<?> parserType : argumentParsers.keySet()) {
-                    if (parserType.isAssignableFrom(type)) {
+            if (parser == null)
+            {
+                for (Class<?> parserType : argumentParsers.keySet())
+                {
+                    if (parserType.isAssignableFrom(type))
+                    {
                         parser = argumentParsers.get(parserType);
                     }
                 }
             }
 
             // Builtin Parser
-            if (parser == null) {
+            if (parser == null)
+            {
                 parser = DefaultParser.forClass(type);
             }
 
             // Parser could not be found
-            if (parser == null) {
+            if (parser == null)
+            {
                 throw new IllegalArgumentException("Command expects unknown argument type: " + type.toString());
             }
 

@@ -7,7 +7,8 @@ import net.pravian.aero.plugin.AeroPlugin;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
-public interface AeroCommandBase<T extends AeroPlugin<T>> {
+public interface AeroCommandBase<T extends AeroPlugin<T>>
+{
 
     public void register(SimpleCommandHandler<T> handler) throws CommandRegistrationException;
 

@@ -55,7 +55,8 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitTask;
 
-public final class InternalMetrics {
+public final class InternalMetrics
+{
 
     private final static int REVISION = 7;
     private static final String BASE_URL = "http://report.mcstats.org";
@@ -72,8 +73,10 @@ public final class InternalMetrics {
     private final String libName;
     private final String libVersion;
 
-    public InternalMetrics(final Plugin plugin, final String libName, final String libVersion) throws IOException {
-        if (plugin == null) {
+    public InternalMetrics(final Plugin plugin, final String libName, final String libVersion) throws IOException
+    {
+        if (plugin == null)
+        {
             throw new IllegalArgumentException("Plugin cannot be null");
         }
 
@@ -94,7 +97,8 @@ public final class InternalMetrics {
         configuration.addDefault("debug", false);
 
         // Do we need to create the file?
-        if (configuration.get("guid", null) == null) {
+        if (configuration.get("guid", null) == null)
+        {
             configuration.options().header("http://mcstats.org").copyDefaults(true);
             configuration.save(configurationFile);
         }
@@ -104,8 +108,10 @@ public final class InternalMetrics {
         debug = configuration.getBoolean("debug", false);
     }
 
-    public Graph createGraph(final String name) {
-        if (name == null) {
+    public Graph createGraph(final String name)
+    {
+        if (name == null)
+        {
             throw new IllegalArgumentException("Graph name cannot be null");
         }
 
@@ -119,37 +125,48 @@ public final class InternalMetrics {
         return graph;
     }
 
-    public void addGraph(final Graph graph) {
-        if (graph == null) {
+    public void addGraph(final Graph graph)
+    {
+        if (graph == null)
+        {
             throw new IllegalArgumentException("Graph cannot be null");
         }
 
         graphs.add(graph);
     }
 
-    public boolean start() {
-        synchronized (optOutLock) {
+    public boolean start()
+    {
+        synchronized (optOutLock)
+        {
             // Did we opt out?
-            if (isOptOut()) {
+            if (isOptOut())
+            {
                 return false;
             }
 
             // Is metrics already running?
-            if (task != null) {
+            if (task != null)
+            {
                 return true;
             }
 
             // Begin hitting the server with glorious data
-            task = plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, new Runnable() {
+            task = plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, new Runnable()
+            {
                 private boolean firstPost = true;
 
                 @Override
-                public void run() {
-                    try {
+                public void run()
+                {
+                    try
+                    {
                         // This has to be synchronized or it can collide with the disable method.
-                        synchronized (optOutLock) {
+                        synchronized (optOutLock)
+                        {
                             // Disable Task, if it is running and the server owner decided to opt-out
-                            if (isOptOut() && task != null) {
+                            if (isOptOut() && task != null)
+                            {
                                 task.cancel();
                                 task = null;
                             }
@@ -163,9 +180,12 @@ public final class InternalMetrics {
                         // After the first post we set firstPost to false
                         // Each post thereafter will be a ping
                         firstPost = false;
-                    } catch (IOException e) {
+                    }
+                    catch (IOException e)
+                    {
                         Bukkit.getLogger().warning("[Aero] Failed to submit metrics"); // Aero
-                        if (Aero.getInstance().isDebugging()) {
+                        if (Aero.getInstance().isDebugging())
+                        {
                             Bukkit.getLogger().severe("[Aero] " + ExceptionUtils.getFullStackTrace(e));
                         }
                     }
@@ -176,18 +196,27 @@ public final class InternalMetrics {
         }
     }
 
-    private boolean isOptOut() {
-        synchronized (optOutLock) {
-            try {
+    private boolean isOptOut()
+    {
+        synchronized (optOutLock)
+        {
+            try
+            {
                 // Reload the metrics file
                 configuration.load(getConfigFile());
-            } catch (IOException ex) {
-                if (debug) {
+            }
+            catch (IOException ex)
+            {
+                if (debug)
+                {
                     Bukkit.getLogger().log(Level.INFO, "[Metrics] " + ex.getMessage());
                 }
                 return true;
-            } catch (InvalidConfigurationException ex) {
-                if (debug) {
+            }
+            catch (InvalidConfigurationException ex)
+            {
+                if (debug)
+                {
                     Bukkit.getLogger().log(Level.INFO, "[Metrics] " + ex.getMessage());
                 }
                 return true;
@@ -196,7 +225,8 @@ public final class InternalMetrics {
         }
     }
 
-    private File getConfigFile() {
+    private File getConfigFile()
+    {
         // I believe the easiest way to get the base folder (e.g craftbukkit set via -P) for plugins to use
         // is to abuse the plugin object we already have
         // plugin.getDataFolder() => base/plugins/PluginA/
@@ -208,7 +238,8 @@ public final class InternalMetrics {
         return new File(new File(pluginsFolder, "PluginMetrics"), "config.yml");
     }
 
-    private void postPlugin(final boolean isPing) throws IOException {
+    private void postPlugin(final boolean isPing) throws IOException
+    {
         // Server software specific section
         // PluginDescriptionFile description = plugin.getDescription(); // Aero comment
         // String pluginName = description.getName(); // Aero comment
@@ -236,7 +267,8 @@ public final class InternalMetrics {
         int coreCount = Runtime.getRuntime().availableProcessors();
 
         // normalize os arch .. amd64 -> x86_64
-        if (osarch.equals("amd64")) {
+        if (osarch.equals("amd64"))
+        {
             osarch = "x86_64";
         }
 
@@ -248,12 +280,15 @@ public final class InternalMetrics {
         appendJSONPair(json, "java_version", java_version);
 
         // If we're pinging, append it
-        if (isPing) {
+        if (isPing)
+        {
             appendJSONPair(json, "ping", "1");
         }
 
-        if (graphs.size() > 0) {
-            synchronized (graphs) {
+        if (graphs.size() > 0)
+        {
+            synchronized (graphs)
+            {
                 json.append(',');
                 json.append('"');
                 json.append("graphs");
@@ -265,19 +300,22 @@ public final class InternalMetrics {
 
                 final Iterator<Graph> iter = graphs.iterator();
 
-                while (iter.hasNext()) {
+                while (iter.hasNext())
+                {
                     Graph graph = iter.next();
 
                     StringBuilder graphJson = new StringBuilder();
                     graphJson.append('{');
 
-                    for (Plotter plotter : graph.getPlotters()) {
+                    for (Plotter plotter : graph.getPlotters())
+                    {
                         appendJSONPair(graphJson, plotter.getColumnName(), Integer.toString(plotter.getValue()));
                     }
 
                     graphJson.append('}');
 
-                    if (!firstGraph) {
+                    if (!firstGraph)
+                    {
                         json.append(',');
                     }
 
@@ -303,9 +341,12 @@ public final class InternalMetrics {
 
         // Mineshafter creates a socks proxy, so we can safely bypass it
         // It does not reroute POST requests so we need to go around it
-        if (isMineshafterPresent()) {
+        if (isMineshafterPresent())
+        {
             connection = url.openConnection(Proxy.NO_PROXY);
-        } else {
+        }
+        else
+        {
             connection = url.openConnection();
         }
 
@@ -322,7 +363,8 @@ public final class InternalMetrics {
 
         connection.setDoOutput(true);
 
-        if (debug) {
+        if (debug)
+        {
             // Aero pluginName -> libName
             System.out.println("[Metrics] Prepared request for " + libName + " uncompressed=" + uncompressed.length + " compressed=" + compressed.length);
         }
@@ -340,46 +382,63 @@ public final class InternalMetrics {
         os.close();
         reader.close();
 
-        if (response == null || response.startsWith("ERR") || response.startsWith("7")) {
-            if (response == null) {
+        if (response == null || response.startsWith("ERR") || response.startsWith("7"))
+        {
+            if (response == null)
+            {
                 response = "null";
-            } else if (response.startsWith("7")) {
+            }
+            else if (response.startsWith("7"))
+            {
                 response = response.substring(response.startsWith("7,") ? 2 : 1);
             }
 
             throw new IOException(response);
-        } else {
-            // Is this the first update this hour?
-            if (response.equals("1") || response.contains("This is your first update this hour")) {
-                synchronized (graphs) {
-                    final Iterator<Graph> iter = graphs.iterator();
+        }
+        else // Is this the first update this hour?
+        if (response.equals("1") || response.contains("This is your first update this hour"))
+        {
+            synchronized (graphs)
+            {
+                final Iterator<Graph> iter = graphs.iterator();
 
-                    while (iter.hasNext()) {
-                        final Graph graph = iter.next();
+                while (iter.hasNext())
+                {
+                    final Graph graph = iter.next();
 
-                        for (Plotter plotter : graph.getPlotters()) {
-                            plotter.reset();
-                        }
+                    for (Plotter plotter : graph.getPlotters())
+                    {
+                        plotter.reset();
                     }
                 }
             }
         }
     }
 
-    private static byte[] gzip(String input) {
+    private static byte[] gzip(String input)
+    {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         GZIPOutputStream gzos = null;
 
-        try {
+        try
+        {
             gzos = new GZIPOutputStream(baos);
             gzos.write(input.getBytes("UTF-8"));
-        } catch (IOException e) {
+        }
+        catch (IOException e)
+        {
             e.printStackTrace();
-        } finally {
-            if (gzos != null) {
-                try {
+        }
+        finally
+        {
+            if (gzos != null)
+            {
+                try
+                {
                     gzos.close();
-                } catch (IOException ignore) {
+                }
+                catch (IOException ignore)
+                {
                 }
             }
         }
@@ -387,49 +446,65 @@ public final class InternalMetrics {
         return baos.toByteArray();
     }
 
-    private boolean isMineshafterPresent() {
-        try {
+    private boolean isMineshafterPresent()
+    {
+        try
+        {
             Class.forName("mineshafter.MineServer");
             return true;
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             return false;
         }
     }
 
-    public static void appendJSONPair(StringBuilder json, String key, String value) throws UnsupportedEncodingException {
+    public static void appendJSONPair(StringBuilder json, String key, String value) throws UnsupportedEncodingException
+    {
         boolean isValueNumeric = false;
 
-        try {
-            if (value.equals("0") || !value.endsWith("0")) {
+        try
+        {
+            if (value.equals("0") || !value.endsWith("0"))
+            {
                 Double.parseDouble(value);
                 isValueNumeric = true;
             }
-        } catch (NumberFormatException e) {
+        }
+        catch (NumberFormatException e)
+        {
             isValueNumeric = false;
         }
 
-        if (json.charAt(json.length() - 1) != '{') {
+        if (json.charAt(json.length() - 1) != '{')
+        {
             json.append(',');
         }
 
         json.append(escapeJSON(key));
         json.append(':');
 
-        if (isValueNumeric) {
+        if (isValueNumeric)
+        {
             json.append(value);
-        } else {
+        }
+        else
+        {
             json.append(escapeJSON(value));
         }
     }
 
-    private static String escapeJSON(String text) {
+    private static String escapeJSON(String text)
+    {
         StringBuilder builder = new StringBuilder();
 
         builder.append('"');
-        for (int index = 0; index < text.length(); index++) {
+        for (int index = 0; index < text.length(); index++)
+        {
             char chr = text.charAt(index);
 
-            switch (chr) {
+            switch (chr)
+            {
                 case '"':
                 case '\\':
                     builder.append('\\');
@@ -448,10 +523,13 @@ public final class InternalMetrics {
                     builder.append("\\r");
                     break;
                 default:
-                    if (chr < ' ') {
+                    if (chr < ' ')
+                    {
                         String t = "000" + Integer.toHexString(chr);
                         builder.append("\\u" + t.substring(t.length() - 4));
-                    } else {
+                    }
+                    else
+                    {
                         builder.append(chr);
                     }
                     break;
@@ -462,7 +540,8 @@ public final class InternalMetrics {
         return builder.toString();
     }
 
-    private static String urlEncode(final String text) throws UnsupportedEncodingException {
+    private static String urlEncode(final String text) throws UnsupportedEncodingException
+    {
         return URLEncoder.encode(text, "UTF-8");
     }
 }

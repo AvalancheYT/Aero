@@ -24,26 +24,31 @@ import net.pravian.aero.command.AeroCommandBase;
 /**
  * Represents a class which stores information about command permissions.
  */
-public abstract class SimplePermissionHandler implements AeroPermissionHandler {
+public abstract class SimplePermissionHandler implements AeroPermissionHandler
+{
 
     private final Map<Class<? extends AeroCommandBase<?>>, Set<String>> permissions = Maps.newHashMap();
 
     /**
-     * Returns the permission-set required to execute a command or null if the command has no permission attached.
+     * Returns the permission-set required to execute a command or null if the
+     * command has no permission attached.
      *
      * <p>
-     * <b>Note</b>: The set contains a list of permissions of which <b>one</b> must be owned by the sender in order to process the command.</p>
+     * <b>Note</b>: The set contains a list of permissions of which <b>one</b>
+     * must be owned by the sender in order to process the command.</p>
      *
      * @param command The command to which the permission is required
      * @return The permissions / null
      */
     @Override
-    public Set<String> getPermissions(Class<? extends AeroCommandBase<?>> command) {
+    public Set<String> getPermissions(Class<? extends AeroCommandBase<?>> command)
+    {
         return permissions.get(command);
     }
 
     @Override
-    public boolean containsPermissions(Class<? extends AeroCommandBase<?>> command) {
+    public boolean containsPermissions(Class<? extends AeroCommandBase<?>> command)
+    {
         return permissions.containsKey(command);
     }
 
@@ -55,8 +60,10 @@ public abstract class SimplePermissionHandler implements AeroPermissionHandler {
      * @return True if the command has the said permission attached to it.
      */
     @Override
-    public boolean containsPermission(Class<? extends AeroCommandBase<?>> command, String permission) {
-        if (!containsPermissions(command)) {
+    public boolean containsPermission(Class<? extends AeroCommandBase<?>> command, String permission)
+    {
+        if (!containsPermissions(command))
+        {
             return false;
         }
 
@@ -70,11 +77,13 @@ public abstract class SimplePermissionHandler implements AeroPermissionHandler {
      * @param permission The permission required to execute the command.
      */
     @Override
-    public void addPermission(Class<? extends AeroCommandBase<?>> command, String permission) {
+    public void addPermission(Class<? extends AeroCommandBase<?>> command, String permission)
+    {
 
         Set<String> requires = permissions.get(command);
 
-        if (requires == null) {
+        if (requires == null)
+        {
             requires = new HashSet<String>();
         }
 
@@ -86,7 +95,8 @@ public abstract class SimplePermissionHandler implements AeroPermissionHandler {
      * Clears all the permissions stored.
      */
     @Override
-    public void clearPermissions() {
+    public void clearPermissions()
+    {
         permissions.clear();
     }
 
@@ -96,7 +106,8 @@ public abstract class SimplePermissionHandler implements AeroPermissionHandler {
      * @param command The command from which the permissions must be cleared.
      */
     @Override
-    public void clearPermissions(Class<? extends AeroCommandBase<?>> command) {
+    public void clearPermissions(Class<? extends AeroCommandBase<?>> command)
+    {
         permissions.remove(command);
     }
 

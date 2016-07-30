@@ -8,9 +8,11 @@ import org.bukkit.plugin.Plugin;
  * Represents all Logger-related utilities.
  *
  */
-public class Loggers {
+public class Loggers
+{
 
-    private Loggers() {
+    private Loggers()
+    {
     }
 
     /**
@@ -18,7 +20,8 @@ public class Loggers {
      *
      * @param message The message to print.
      */
-    public static void info(String message) {
+    public static void info(String message)
+    {
         Bukkit.getLogger().info(message);
     }
 
@@ -28,7 +31,8 @@ public class Loggers {
      * @param plugin The Plugin to use.
      * @param message The message to print.
      */
-    public static void info(Plugin plugin, String message) {
+    public static void info(Plugin plugin, String message)
+    {
         plugin.getLogger().info(message);
     }
 
@@ -37,7 +41,8 @@ public class Loggers {
      *
      * @param message The message to print.
      */
-    public static void warning(String message) {
+    public static void warning(String message)
+    {
         Bukkit.getLogger().warning(message);
     }
 
@@ -47,7 +52,8 @@ public class Loggers {
      * @param plugin The Plugin to use.
      * @param message The message to print.
      */
-    public static void warning(Plugin plugin, String message) {
+    public static void warning(Plugin plugin, String message)
+    {
         plugin.getLogger().warning(message);
     }
 
@@ -55,16 +61,21 @@ public class Loggers {
      * Prints a severe-message to the raw Bukkit logger.
      *
      * <p>
-     * <b>Note</b>: This methods also accepts all instances of {@link java.lang.Throwable} and will print the attached stacktrace.
+     * <b>Note</b>: This methods also accepts all instances of
+     * {@link java.lang.Throwable} and will print the attached stacktrace.
      *
      * @param message The message to print.
      */
-    public static void severe(Object message) {
+    public static void severe(Object message)
+    {
         final String line;
 
-        if (message instanceof Throwable) {
+        if (message instanceof Throwable)
+        {
             line = ExceptionUtils.getStackTrace((Throwable) message);
-        } else {
+        }
+        else
+        {
             line = String.valueOf(message);
         }
 
@@ -75,17 +86,22 @@ public class Loggers {
      * Prints a severe-message to the plugin logger.
      *
      * <p>
-     * <b>Note</b>: This methods also accepts all instances of {@link java.lang.Throwable} and will print the attached stacktrace.
+     * <b>Note</b>: This methods also accepts all instances of
+     * {@link java.lang.Throwable} and will print the attached stacktrace.
      *
      * @param plugin The Plugin to use.
      * @param message The message to print.
      */
-    public static void severe(Plugin plugin, Object message) {
+    public static void severe(Plugin plugin, Object message)
+    {
         final String line;
 
-        if (message instanceof Throwable) {
+        if (message instanceof Throwable)
+        {
             line = ExceptionUtils.getStackTrace((Throwable) message);
-        } else {
+        }
+        else
+        {
             line = String.valueOf(message);
         }
 

@@ -7,35 +7,48 @@ import org.bukkit.World;
 /**
  * Represents all World-related utilities.
  */
-public class Worlds {
+public class Worlds
+{
 
-    private Worlds() {
+    private Worlds()
+    {
     }
 
-    public static World getWorld(String name) {
+    public static World getWorld(String name)
+    {
         name = name.toLowerCase();
         World world = Bukkit.getWorld(name);
 
-        if (world == null) {
-            try {
+        if (world == null)
+        {
+            try
+            {
                 UUID uuid = UUID.fromString(name);
                 world = Bukkit.getWorld(uuid);
-            } catch (Exception ignored) {
+            }
+            catch (Exception ignored)
+            {
             }
         }
 
-        if (world == null) {
-            for (World loopWorld : Bukkit.getWorlds()) {
-                if (loopWorld.getName().toLowerCase().equalsIgnoreCase(name)) {
+        if (world == null)
+        {
+            for (World loopWorld : Bukkit.getWorlds())
+            {
+                if (loopWorld.getName().toLowerCase().equalsIgnoreCase(name))
+                {
                     world = loopWorld;
                     break;
                 }
             }
         }
 
-        if (world == null) {
-            for (World loopWorld : Bukkit.getWorlds()) {
-                if (loopWorld.getName().toLowerCase().startsWith(name)) {
+        if (world == null)
+        {
+            for (World loopWorld : Bukkit.getWorlds())
+            {
+                if (loopWorld.getName().toLowerCase().startsWith(name))
+                {
                     world = loopWorld;
                     break;
                 }
@@ -51,7 +64,8 @@ public class Worlds {
      * @param world The world to set the time on.
      * @param ticks The amount of ticks to set the time to.
      */
-    public static void setTime(World world, long ticks) {
+    public static void setTime(World world, long ticks)
+    {
         long time = world.getTime();
         time -= time % 24000;
         world.setTime(time + 24000 + ticks);
@@ -63,18 +77,23 @@ public class Worlds {
      * @param world The world to set the weather on.
      * @param type The weather the world should have.
      */
-    public static void setWeather(World world, WeatherType type) {
-        switch (type) {
-            case SUN: {
+    public static void setWeather(World world, WeatherType type)
+    {
+        switch (type)
+        {
+            case SUN:
+            {
                 world.setThundering(false);
                 world.setStorm(false);
                 break;
             }
-            case RAIN: {
+            case RAIN:
+            {
                 world.setStorm(true);
                 break;
             }
-            case STORM: {
+            case STORM:
+            {
                 world.setThundering(true);
                 break;
             }
@@ -84,7 +103,8 @@ public class Worlds {
     /**
      * Represents different types of weather.
      */
-    public static enum WeatherType {
+    public static enum WeatherType
+    {
 
         SUN,
         RAIN,

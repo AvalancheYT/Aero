@@ -3,7 +3,8 @@ package net.pravian.aero.exception;
 /**
  * Represents an exception handler capable of handling thrown exceptions.
  */
-public interface ExceptionHandler {
+public interface ExceptionHandler
+{
 
     /**
      * Handles an exception or exception string for a plugin.

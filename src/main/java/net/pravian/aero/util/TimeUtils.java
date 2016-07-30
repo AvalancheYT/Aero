@@ -14,7 +14,8 @@ import java.util.regex.Pattern;
 /**
  * Represents all Time-related utilities.
  */
-public class TimeUtils {
+public class TimeUtils
+{
 
     /**
      * The storage format for parsing dates.
@@ -22,7 +23,8 @@ public class TimeUtils {
     public static final String DATE_STORAGE_FORMAT = "EEE, d MMM yyyy HH:mm:ss Z";
     private static final Map<String, Integer> times = new HashMap<String, Integer>();
 
-    static {
+    static
+    {
         times.put("dawn", 22000);
         times.put("sunrise", 23000);
         times.put("morning", 24000);
@@ -37,7 +39,8 @@ public class TimeUtils {
         times.put("midnight", 16000);
     }
 
-    private TimeUtils() {
+    private TimeUtils()
+    {
     }
 
     /**
@@ -51,20 +54,28 @@ public class TimeUtils {
      *
      * @param timeName The time name to parse.
      */
-    public static long getTime(String timeName) {
-        try {
+    public static long getTime(String timeName)
+    {
+        try
+        {
             String[] bits = timeName.split(":");
-            if (bits.length == 2) {
+            if (bits.length == 2)
+            {
                 long hours = 1000 * (Long.parseLong(bits[0]) - 8);
                 long minutes = 1000 * Long.parseLong(bits[1]) / 60;
                 return hours + minutes;
-            } else {
+            }
+            else
+            {
                 return (long) ((Double.parseDouble(timeName) - 8) * 1000);
             }
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             // Or some shortcuts
             Integer time = times.get(timeName == null ? null : timeName.toLowerCase());
-            if (time != null) {
+            if (time != null)
+            {
                 return time.longValue();
             }
         }
@@ -84,9 +95,11 @@ public class TimeUtils {
      * @param time
      * @return The Date at at the parsed offset / null.
      */
-    public static Date parseDateOffset(String time) {
+    public static Date parseDateOffset(String time)
+    {
 
-        if (time.trim().equalsIgnoreCase("never")) {
+        if (time.trim().equalsIgnoreCase("never"))
+        {
             return null;
         }
 
@@ -107,66 +120,86 @@ public class TimeUtils {
         int minutes = 0;
         int seconds = 0;
         boolean found = false;
-        while (m.find()) {
-            if (m.group() == null || m.group().isEmpty()) {
+        while (m.find())
+        {
+            if (m.group() == null || m.group().isEmpty())
+            {
                 continue;
             }
-            for (int i = 0; i < m.groupCount(); i++) {
-                if (m.group(i) != null && !m.group(i).isEmpty()) {
+            for (int i = 0; i < m.groupCount(); i++)
+            {
+                if (m.group(i) != null && !m.group(i).isEmpty())
+                {
                     found = true;
                     break;
                 }
             }
-            if (found) {
-                if (m.group(1) != null && !m.group(1).isEmpty()) {
+            if (found)
+            {
+                if (m.group(1) != null && !m.group(1).isEmpty())
+                {
                     years = Integer.parseInt(m.group(1));
                 }
-                if (m.group(2) != null && !m.group(2).isEmpty()) {
+                if (m.group(2) != null && !m.group(2).isEmpty())
+                {
                     months = Integer.parseInt(m.group(2));
                 }
-                if (m.group(3) != null && !m.group(3).isEmpty()) {
+                if (m.group(3) != null && !m.group(3).isEmpty())
+                {
                     weeks = Integer.parseInt(m.group(3));
                 }
-                if (m.group(4) != null && !m.group(4).isEmpty()) {
+                if (m.group(4) != null && !m.group(4).isEmpty())
+                {
                     days = Integer.parseInt(m.group(4));
                 }
-                if (m.group(5) != null && !m.group(5).isEmpty()) {
+                if (m.group(5) != null && !m.group(5).isEmpty())
+                {
                     hours = Integer.parseInt(m.group(5));
                 }
-                if (m.group(6) != null && !m.group(6).isEmpty()) {
+                if (m.group(6) != null && !m.group(6).isEmpty())
+                {
                     minutes = Integer.parseInt(m.group(6));
                 }
-                if (m.group(7) != null && !m.group(7).isEmpty()) {
+                if (m.group(7) != null && !m.group(7).isEmpty())
+                {
                     seconds = Integer.parseInt(m.group(7));
                 }
                 break;
             }
         }
-        if (!found) {
+        if (!found)
+        {
             return null;
         }
 
         Calendar c = new GregorianCalendar();
 
-        if (years > 0) {
+        if (years > 0)
+        {
             c.add(Calendar.YEAR, years);
         }
-        if (months > 0) {
+        if (months > 0)
+        {
             c.add(Calendar.MONTH, months);
         }
-        if (weeks > 0) {
+        if (weeks > 0)
+        {
             c.add(Calendar.WEEK_OF_YEAR, weeks);
         }
-        if (days > 0) {
+        if (days > 0)
+        {
             c.add(Calendar.DAY_OF_MONTH, days);
         }
-        if (hours > 0) {
+        if (hours > 0)
+        {
             c.add(Calendar.HOUR_OF_DAY, hours);
         }
-        if (minutes > 0) {
+        if (minutes > 0)
+        {
             c.add(Calendar.MINUTE, minutes);
         }
-        if (seconds > 0) {
+        if (seconds > 0)
+        {
             c.add(Calendar.SECOND, seconds);
         }
 
@@ -177,7 +210,8 @@ public class TimeUtils {
      * Parses a Date to a string using {@link #DATE_STORAGE_FORMAT}.
      *
      * <p>
-     * The default storage format is config-friendly, so it may be used in YamlConfig.</p>
+     * The default storage format is config-friendly, so it may be used in
+     * YamlConfig.</p>
      * <p>
      * Parsing <i>null</i> returns "never".</p>
      *
@@ -185,8 +219,10 @@ public class TimeUtils {
      * @return The parsed String.
      * @see #parseString(String)
      */
-    public static String parseDate(Date date) {
-        if (date == null) {
+    public static String parseDate(Date date)
+    {
+        if (date == null)
+        {
             return "never";
         }
         return new SimpleDateFormat(DATE_STORAGE_FORMAT, Locale.ENGLISH).format(date);
@@ -196,7 +232,8 @@ public class TimeUtils {
      * Parses a Date to a string using {@link #DATE_STORAGE_FORMAT}.
      *
      * <p>
-     * The default storage format is config-friendly, so it may be used in YamlConfig.</p>
+     * The default storage format is config-friendly, so it may be used in
+     * YamlConfig.</p>
      *
      * <p>
      * Parsing <i>never</i> returns null.</p>
@@ -205,13 +242,18 @@ public class TimeUtils {
      * @return The parsed Date.
      * @see #parseDate(Date)
      */
-    public static Date parseString(String date) {
-        if (date == null || date.isEmpty() || date.trim().equalsIgnoreCase("never")) {
+    public static Date parseString(String date)
+    {
+        if (date == null || date.isEmpty() || date.trim().equalsIgnoreCase("never"))
+        {
             return null;
         }
-        try {
+        try
+        {
             return new SimpleDateFormat(DATE_STORAGE_FORMAT, Locale.ENGLISH).parse(date);
-        } catch (ParseException ex) {
+        }
+        catch (ParseException ex)
+        {
             return new Date(0L);
         }
     }
@@ -221,7 +263,8 @@ public class TimeUtils {
      *
      * @return The number of seconds since the Unix epoch.
      */
-    public static long getUnix() {
+    public static long getUnix()
+    {
         return System.currentTimeMillis() / 1000L;
     }
 
@@ -231,7 +274,8 @@ public class TimeUtils {
      * @param timestamp The Timestamp to parse.
      * @return The date represented by the timestamp.
      */
-    public static Date getUnixDate(long timestamp) {
+    public static Date getUnixDate(long timestamp)
+    {
         return new Date(timestamp * 1000L);
     }
 }

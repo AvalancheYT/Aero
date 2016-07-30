@@ -27,14 +27,16 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
-public abstract class TooledCommandBase<T extends AeroPlugin<T>> extends AbstractCommandBase<T> {
+public abstract class TooledCommandBase<T extends AeroPlugin<T>> extends AbstractCommandBase<T>
+{
 
     /**
      * Validates if the sender of the command is not a player.
      *
      * @return true if the CommandSender is not a Player.
      */
-    protected boolean isConsole() {
+    protected boolean isConsole()
+    {
         return !(sender instanceof Player);
     }
 
@@ -53,7 +55,8 @@ public abstract class TooledCommandBase<T extends AeroPlugin<T>> extends Abstrac
      *
      * @return true
      */
-    protected boolean noPerms() {
+    protected boolean noPerms()
+    {
         msg(getHandler().getPermissionMessage());
         return true;
     }
@@ -67,7 +70,8 @@ public abstract class TooledCommandBase<T extends AeroPlugin<T>> extends Abstrac
      * @see #noPerms()
      * @return true
      */
-    protected boolean showUsage() {
+    protected boolean showUsage()
+    {
         msg(command.getUsage().replaceAll("<command>", command.getLabel()));
         return true;
     }
@@ -78,7 +82,8 @@ public abstract class TooledCommandBase<T extends AeroPlugin<T>> extends Abstrac
      * @param message The message to send.
      * @see #msg(CommandSender, String, ChatColor)
      */
-    protected void msg(final PluginMessage message) {
+    protected void msg(final PluginMessage message)
+    {
         msg(message.getMessage());
     }
 
@@ -88,7 +93,8 @@ public abstract class TooledCommandBase<T extends AeroPlugin<T>> extends Abstrac
      * @param message The message to send.
      * @see #msg(CommandSender, String, ChatColor)
      */
-    protected void msg(final String message) {
+    protected void msg(final String message)
+    {
         msg(sender, message);
     }
 
@@ -99,7 +105,8 @@ public abstract class TooledCommandBase<T extends AeroPlugin<T>> extends Abstrac
      * @param message The message to send.
      * @see #msg(CommandSender, String, ChatColor)
      */
-    protected void msg(final CommandSender receiver, final String message) {
+    protected void msg(final CommandSender receiver, final String message)
+    {
         msg(receiver, message, ChatColor.GRAY);
     }
 
@@ -110,7 +117,8 @@ public abstract class TooledCommandBase<T extends AeroPlugin<T>> extends Abstrac
      * @param color The color in which the message must be sent.
      * @see #msg(CommandSender, String, ChatColor)
      */
-    protected void msg(final String message, final ChatColor color) {
+    protected void msg(final String message, final ChatColor color)
+    {
         msg(sender, message, color);
     }
 
@@ -121,8 +129,10 @@ public abstract class TooledCommandBase<T extends AeroPlugin<T>> extends Abstrac
      * @param message The message to send.
      * @param color The color in which the message must be sent.
      */
-    protected void msg(final CommandSender receiver, final String message, final ChatColor color) {
-        if (receiver == null) {
+    protected void msg(final CommandSender receiver, final String message, final ChatColor color)
+    {
+        if (receiver == null)
+        {
             return;
         }
         receiver.sendMessage(color + message);
@@ -135,10 +145,12 @@ public abstract class TooledCommandBase<T extends AeroPlugin<T>> extends Abstrac
      * Uses {@link PlayerUtils#getPlayer(String)}.</p>
      *
      * @param name
-     * @return The player that has been found (<b>Or null if the player could not be found!</b>)
+     * @return The player that has been found (<b>Or null if the player could
+     * not be found!</b>)
      * @see PlayerUtils#getPlayer(String)
      */
-    protected Player getPlayer(final String name) {
+    protected Player getPlayer(final String name)
+    {
         return Players.getPlayer(name);
     }
 
@@ -146,23 +158,27 @@ public abstract class TooledCommandBase<T extends AeroPlugin<T>> extends Abstrac
      * Searches and returns an offline or online player by (partial)name.
      *
      * <p>
-     * Uses {@link net.pravian.bukkitlib.util.PlayerUtils#getOfflinePlayer(String)}.</p>
+     * Uses
+     * {@link net.pravian.bukkitlib.util.PlayerUtils#getOfflinePlayer(String)}.</p>
      *
      * @param name
-     * @return The OfflinePlayer that has been found (<b>Or null if the player could not be found!</b>)
+     * @return The OfflinePlayer that has been found (<b>Or null if the player
+     * could not be found!</b>)
      * @see PlayerUtils#getOfflinePlayer(String)
      */
-    protected OfflinePlayer getOfflinePlayer(final String name) {
+    protected OfflinePlayer getOfflinePlayer(final String name)
+    {
         return Players.getOfflinePlayer(name);
     }
 
-    protected World getWorld(final String world) {
+    protected World getWorld(final String world)
+    {
         return Worlds.getWorld(world);
     }
 
-    protected Plugin getPlugin(final String plugin) {
+    protected Plugin getPlugin(final String plugin)
+    {
         return Plugins.getPlugin(plugin);
     }
 
-    
 }

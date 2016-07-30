@@ -37,79 +37,100 @@ import org.bukkit.command.PluginCommand;
 /**
  * Represents a handler for executing commands.
  *
- * @param <T extends Plugin> Optional Type-safety (Plugin instance) that the command can use to get the original Plugin instance.
+ * @param <T extends Plugin> Optional Type-safety (Plugin instance) that the
+ * command can use to get the original Plugin instance.
  */
-public class SimpleCommandHandler<T extends AeroPlugin<T>> extends AbstractCommandHandler<T> {
+public class SimpleCommandHandler<T extends AeroPlugin<T>> extends AbstractCommandHandler<T>
+{
 
     private final Map<String, AeroCommandExecutor<?>> commands = Maps.newHashMap();
     private final Map<String, PluginCommand> registeredCommands = Maps.newHashMap();
     @Setter
     private AeroCommandExecutorFactory executorFactory;
 
-    public SimpleCommandHandler(T plugin) {
+    public SimpleCommandHandler(T plugin)
+    {
         this(plugin, plugin.getPluginLogger());
     }
 
-    public SimpleCommandHandler(T plugin, AeroLogger logger) {
+    public SimpleCommandHandler(T plugin, AeroLogger logger)
+    {
         super(plugin, logger);
     }
 
-    public AeroCommandExecutorFactory getExecutorFactory() {
-        if (executorFactory == null) {
+    public AeroCommandExecutorFactory getExecutorFactory()
+    {
+        if (executorFactory == null)
+        {
             executorFactory = new SimpleCommandExecutor.SimpleCommandExecutorFactory();
         }
         return executorFactory;
     }
 
     @Override
-    public void clearCommands() {
+    public void clearCommands()
+    {
         commands.clear();
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    public void loadFrom(Package pack) {
+    public void loadFrom(Package pack)
+    {
         ClassPath classPath;
-        try {
+        try
+        {
             classPath = ClassPath.from(plugin.getClass().getClassLoader());
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             plugin.logger.severe("Could not load commands from package: " + pack.getName());
             plugin.logger.severe(ex);
             return;
         }
 
-        for (ClassInfo info : classPath.getTopLevelClasses(pack.getName())) {
+        for (ClassInfo info : classPath.getTopLevelClasses(pack.getName()))
+        {
 
-            if (!info.getSimpleName().startsWith(commandClassPrefix)) {
+            if (!info.getSimpleName().startsWith(commandClassPrefix))
+            {
                 logger.debug("Skipping class in command package: " + info.getSimpleName() + ". Class does not have required prefix.");
                 continue;
             }
 
             final String name = info.getSimpleName().substring(commandClassPrefix.length()).toLowerCase();
 
-            if (commands.containsKey(name)) {
+            if (commands.containsKey(name))
+            {
                 logger.warning("Skipping class in command package: " + info.getSimpleName() + ". Command name conflict!");
                 continue;
             }
 
             final Class<?> clazz = info.load();
 
-            if (!AeroCommandBase.class.isAssignableFrom(clazz)) {
+            if (!AeroCommandBase.class.isAssignableFrom(clazz))
+            {
                 logger.debug("Skipping class in command package: " + info.getSimpleName() + ". Class does can not be assigned to CommandBase.");
                 continue;
             }
 
             AeroCommandBase<T> command;
-            try {
+            try
+            {
                 command = (AeroCommandBase<T>) clazz.newInstance();
-            } catch (Exception ex) {
+            }
+            catch (Exception ex)
+            {
                 plugin.handleException("Could not instantiate command class: " + info.getSimpleName(), ex);
                 continue;
             }
 
-            try {
+            try
+            {
                 command.register(this);
-            } catch (Exception ex) {
+            }
+            catch (Exception ex)
+            {
                 plugin.handleException("Could not register command: " + name, ex);
                 return;
             }
@@ -119,10 +140,13 @@ public class SimpleCommandHandler<T extends AeroPlugin<T>> extends AbstractComma
     }
 
     @Override
-    public void add(AeroCommandBase<T> command, String name) {
-        if (name == null) {
+    public void add(AeroCommandBase<T> command, String name)
+    {
+        if (name == null)
+        {
             name = command.getClass().getSimpleName();
-            if (!name.startsWith(commandClassPrefix)) {
+            if (!name.startsWith(commandClassPrefix))
+            {
                 logger.debug("Skipping class in command package: " + name + ". Class does not have required prefix.");
                 return;
             }
@@ -130,9 +154,12 @@ public class SimpleCommandHandler<T extends AeroPlugin<T>> extends AbstractComma
             name = name.substring(commandClassPrefix.length());
         }
 
-        try {
+        try
+        {
             command.register(this);
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             plugin.handleException("Could not register command: " + name, ex);
             return;
         }
@@ -141,10 +168,14 @@ public class SimpleCommandHandler<T extends AeroPlugin<T>> extends AbstractComma
     }
 
     @Override
-    public void add(AeroCommandExecutor<? extends AeroCommandBase<T>> executor) {
-        try {
+    public void add(AeroCommandExecutor<? extends AeroCommandBase<T>> executor)
+    {
+        try
+        {
             executor.getCommandBase().register(this);
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             plugin.handleException("Could not register command: " + executor.getName(), ex);
             return;
         }
@@ -153,12 +184,14 @@ public class SimpleCommandHandler<T extends AeroPlugin<T>> extends AbstractComma
     }
 
     @Override
-    public boolean registerAll(String fallbackPrefix, boolean force) {
+    public boolean registerAll(String fallbackPrefix, boolean force)
+    {
         registeredCommands.clear();
 
         // Get command map
         CommandMap map = CommandReflection.getCommandMap();
-        if (map == null) {
+        if (map == null)
+        {
             logger.severe("Could not register commands to command map. Could not find command map!");
             return false;
         }
@@ -166,10 +199,12 @@ public class SimpleCommandHandler<T extends AeroPlugin<T>> extends AbstractComma
         // Used to unregister old commands when force-registering
         Map<String, Command> mapKnownCommands = null;
 
-        for (String name : commands.keySet()) {
+        for (String name : commands.keySet())
+        {
             final PluginCommand command = CommandReflection.newPluginCommand(name, plugin);
 
-            if (command == null) {
+            if (command == null)
+            {
                 logger.severe("Could not register command: " + name + ". Could not instantiate PluginCommand instance!");
                 continue;
             }
@@ -185,17 +220,23 @@ public class SimpleCommandHandler<T extends AeroPlugin<T>> extends AbstractComma
 
             // If we're force-registering the command, remove the previous command
             final Command prevCommand = map.getCommand(name);
-            if (force && prevCommand != null) {
-                if (mapKnownCommands == null && (mapKnownCommands = CommandReflection.getKnownCommands()) == null) {
+            if (force && prevCommand != null)
+            {
+                if (mapKnownCommands == null && (mapKnownCommands = CommandReflection.getKnownCommands()) == null)
+                {
                     logger.warning("Could not remove old command registration: " + prevCommand.getName() + ". Could not determine known commands!");
-                } else {
+                }
+                else
+                {
                     // Unregister the old command
                     prevCommand.unregister(map);
 
                     // Remove any references to the old command
-                    for (String label : new HashSet<String>(mapKnownCommands.keySet())) {
+                    for (String label : new HashSet<String>(mapKnownCommands.keySet()))
+                    {
                         Command loopCommand = mapKnownCommands.get(label);
-                        if (prevCommand.equals(loopCommand)) {
+                        if (prevCommand.equals(loopCommand))
+                        {
                             mapKnownCommands.remove(label);
                         }
                     }
@@ -203,7 +244,8 @@ public class SimpleCommandHandler<T extends AeroPlugin<T>> extends AbstractComma
             }
 
             // Register command
-            if (!map.register(fallbackPrefix, command)) {
+            if (!map.register(fallbackPrefix, command))
+            {
                 logger.warning("Could not register command: " + command.getName() + ". (is this command already registered?)");
                 continue;
             }
@@ -214,22 +256,26 @@ public class SimpleCommandHandler<T extends AeroPlugin<T>> extends AbstractComma
     }
 
     @Override
-    public Map<String, AeroCommandExecutor<?>> getExecutorMap() {
+    public Map<String, AeroCommandExecutor<?>> getExecutorMap()
+    {
         return Collections.unmodifiableMap(commands);
     }
 
     @Override
-    public Collection<AeroCommandExecutor<?>> getExecutors() {
+    public Collection<AeroCommandExecutor<?>> getExecutors()
+    {
         return commands.values();
     }
 
     @Override
-    public Map<String, PluginCommand> getRegisteredCommandsMap() {
+    public Map<String, PluginCommand> getRegisteredCommandsMap()
+    {
         return Collections.unmodifiableMap(registeredCommands);
     }
 
     @Override
-    public Collection<PluginCommand> getRegisteredCommands() {
+    public Collection<PluginCommand> getRegisteredCommands()
+    {
         return registeredCommands.values();
     }
 }

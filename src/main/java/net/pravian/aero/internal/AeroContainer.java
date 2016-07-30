@@ -4,7 +4,8 @@ import java.util.logging.Logger;
 import net.pravian.aero.Aero;
 import org.bukkit.plugin.Plugin;
 
-public interface AeroContainer extends Plugin {
+public interface AeroContainer extends Plugin
+{
 
     public Aero getAero();
 

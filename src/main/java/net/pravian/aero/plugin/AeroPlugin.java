@@ -31,7 +31,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public abstract class AeroPlugin<T extends AeroPlugin<T>> extends JavaPlugin implements ExceptionHandler, PluginContainer<T>, Listener {
+public abstract class AeroPlugin<T extends AeroPlugin<T>> extends JavaPlugin implements ExceptionHandler, PluginContainer<T>, Listener
+{
 
     protected final T plugin;
     protected final Server server;
@@ -44,10 +45,14 @@ public abstract class AeroPlugin<T extends AeroPlugin<T>> extends JavaPlugin imp
     protected ExceptionHandler exceptionHandler;
 
     @SuppressWarnings("unchecked")
-    public AeroPlugin() {
-        try {
+    public AeroPlugin()
+    {
+        try
+        {
             this.plugin = (T) this;
-        } catch (ClassCastException ex) {
+        }
+        catch (ClassCastException ex)
+        {
             getLogger().severe("Could not cast plugin type! (Are you extending AeroPlugin properly?)");
             throw new RuntimeException(ex);
         }
@@ -58,22 +63,26 @@ public abstract class AeroPlugin<T extends AeroPlugin<T>> extends JavaPlugin imp
         this.config = new YamlConfig(plugin, "config.yml"); // Requires logger to be present
     }
 
-    public final Aero getAero() {
+    public final Aero getAero()
+    {
         return aero;
     }
 
     @Override
-    public final T getPlugin() {
+    public final T getPlugin()
+    {
         return plugin;
     }
 
     @Override
-    public final void onLoad() {
+    public final void onLoad()
+    {
         load();
     }
 
     @Override
-    public final void onEnable() {
+    public final void onEnable()
+    {
         this.aero = Aero.getInstance();
         this.options = aero.register(plugin);
 
@@ -83,20 +92,26 @@ public abstract class AeroPlugin<T extends AeroPlugin<T>> extends JavaPlugin imp
     }
 
     @Override
-    public final void onDisable() {
+    public final void onDisable()
+    {
         HandlerList.unregisterAll();
 
-        try {
+        try
+        {
             disable();
-        } finally {
+        }
+        finally
+        {
             aero.unregister(plugin);
         }
     }
 
-    protected void setup(RegisteredPlugin options) {
+    protected void setup(RegisteredPlugin options)
+    {
     }
 
-    protected void load() {
+    protected void load()
+    {
     }
 
     protected abstract void enable();
@@ -112,7 +127,8 @@ public abstract class AeroPlugin<T extends AeroPlugin<T>> extends JavaPlugin imp
      * @return The YamlConfig instance.
      */
     @Override
-    public final YamlConfig getConfig() {
+    public final YamlConfig getConfig()
+    {
         return config;
     }
 
@@ -121,15 +137,18 @@ public abstract class AeroPlugin<T extends AeroPlugin<T>> extends JavaPlugin imp
      *
      * @return The PluginLogger instance.
      */
-    public final AeroLogger getPluginLogger() {
+    public final AeroLogger getPluginLogger()
+    {
         return logger;
     }
 
-    public ExceptionHandler getExceptionHandler() {
+    public ExceptionHandler getExceptionHandler()
+    {
         return exceptionHandler;
     }
 
-    public void setExceptionHandler(ExceptionHandler exceptionHandler) {
+    public void setExceptionHandler(ExceptionHandler exceptionHandler)
+    {
         this.exceptionHandler = exceptionHandler;
     }
 
@@ -138,7 +157,8 @@ public abstract class AeroPlugin<T extends AeroPlugin<T>> extends JavaPlugin imp
      *
      * @return the version
      */
-    public final String getVersion() {
+    public final String getVersion()
+    {
         return plugin.getDescription().getVersion();
     }
 
@@ -147,7 +167,8 @@ public abstract class AeroPlugin<T extends AeroPlugin<T>> extends JavaPlugin imp
      *
      * @return The author.
      */
-    public final String getAuthor() {
+    public final String getAuthor()
+    {
         return getAuthors().get(0);
     }
 
@@ -156,7 +177,8 @@ public abstract class AeroPlugin<T extends AeroPlugin<T>> extends JavaPlugin imp
      *
      * @return The authors.
      */
-    public final List<String> getAuthors() {
+    public final List<String> getAuthors()
+    {
         return plugin.getDescription().getAuthors();
     }
 
@@ -166,12 +188,15 @@ public abstract class AeroPlugin<T extends AeroPlugin<T>> extends JavaPlugin imp
      * @param listener to register
      * @return True if the listener registered correctly.
      */
-    public final boolean register(Listener listener) {
-        if (listener == null) {
+    public final boolean register(Listener listener)
+    {
+        if (listener == null)
+        {
             return false;
         }
 
-        if (listener instanceof PluginListener) {
+        if (listener instanceof PluginListener)
+        {
             ((PluginListener<?>) listener).register();
             return true;
         }
@@ -190,20 +215,25 @@ public abstract class AeroPlugin<T extends AeroPlugin<T>> extends JavaPlugin imp
      * @return True if the listener registered correctly.
      */
     @SuppressWarnings("unchecked")
-    public final <T extends Listener> boolean register(Class<T> listener) throws IllegalArgumentException {
-        if (listener == null) {
+    public final <T extends Listener> boolean register(Class<T> listener) throws IllegalArgumentException
+    {
+        if (listener == null)
+        {
             return false;
         }
 
         // TODO: Speed up PluginListener classes
         // Find plugin constructor, if it's present
         Constructor<T> foundCon = null;
-        for (Constructor<?> con : listener.getConstructors()) {
-            if (con.getParameterTypes().length != 1) {
+        for (Constructor<?> con : listener.getConstructors())
+        {
+            if (con.getParameterTypes().length != 1)
+            {
                 continue;
             }
 
-            if (Plugin.class.isAssignableFrom(con.getParameterTypes()[0])) {
+            if (Plugin.class.isAssignableFrom(con.getParameterTypes()[0]))
+            {
                 foundCon = (Constructor<T>) con;
                 break;
             }
@@ -211,15 +241,22 @@ public abstract class AeroPlugin<T extends AeroPlugin<T>> extends JavaPlugin imp
 
         // Instantiate
         final T inst;
-        try {
+        try
+        {
             inst = (foundCon == null ? listener.newInstance() : foundCon.newInstance(this));
-        } catch (InstantiationException ex) {
+        }
+        catch (InstantiationException ex)
+        {
             handleException(ex);
             return false;
-        } catch (IllegalAccessException ex) {
+        }
+        catch (IllegalAccessException ex)
+        {
             handleException(ex);
             return false;
-        } catch (InvocationTargetException ex) {
+        }
+        catch (InvocationTargetException ex)
+        {
             handleException(ex);
             return false;
         }
@@ -230,19 +267,24 @@ public abstract class AeroPlugin<T extends AeroPlugin<T>> extends JavaPlugin imp
     }
 
     @Override
-    public final void handleException(String msg) {
+    public final void handleException(String msg)
+    {
         handleException(msg, null);
     }
 
     @Override
-    public final void handleException(Throwable ex) {
+    public final void handleException(Throwable ex)
+    {
         handleException(null, ex);
     }
 
     @Override
-    public final void handleException(String msg, Throwable ex) {
-        if (options.doesThrowExceptions()) {
-            if (ex instanceof RuntimeException) {
+    public final void handleException(String msg, Throwable ex)
+    {
+        if (options.doesThrowExceptions())
+        {
+            if (ex instanceof RuntimeException)
+            {
                 throw (RuntimeException) ex;
             }
             throw new RuntimeException(ex);

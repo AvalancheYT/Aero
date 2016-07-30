@@ -15,7 +15,8 @@
  */
 package net.pravian.aero.reflection;
 
-public interface ReflectionAccess {
+public interface ReflectionAccess
+{
 
     public boolean isAccessible();
 

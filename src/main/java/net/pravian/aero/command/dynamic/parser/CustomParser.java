@@ -25,7 +25,8 @@ import java.lang.annotation.Target;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.PARAMETER)
-public @interface CustomParser {
+public @interface CustomParser
+{
 
     public Class<? extends Parser<?>> value();
 

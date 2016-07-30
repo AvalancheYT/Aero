@@ -16,26 +16,31 @@ import org.bukkit.entity.Player;
 /**
  * Represents all Player-related utilities.
  */
-public class Players {
+public class Players
+{
 
-    private Players() {
+    private Players()
+    {
     }
 
     // TODO: docs docs docs
-    public static boolean is(Object obj) {
+    public static boolean is(Object obj)
+    {
         return obj instanceof Player && ((Player) obj).isOnline();
     }
 
     /**
      * Attempts to resolve the full Player-Name by a portion of it.
      *
-     * <b>Note</b>: Uses {@link #getOfflinePlayer(java.lang.String)} to obtain the player-name.
+     * <b>Note</b>: Uses {@link #getOfflinePlayer(java.lang.String)} to obtain
+     * the player-name.
      *
      * @param name The partial name to search.
      * @return The player name, if the player could not be found, null.
      * @see #getOfflinePlayer(String)
      */
-    public static String getPlayerName(String name) {
+    public static String getPlayerName(String name)
+    {
         final OfflinePlayer player = getOfflinePlayer(name);
         return (player == null ? null : player.getName());
     }
@@ -57,33 +62,44 @@ public class Players {
      * @param name The partial name to match.
      * @return The player. If the player could not be found, null.
      */
-    public static Player getPlayer(String name) { // TODO: UUIDs, IPs
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            if (player.getName().equalsIgnoreCase(name)) {
+    public static Player getPlayer(String name)
+    { // TODO: UUIDs, IPs
+        for (Player player : Bukkit.getOnlinePlayers())
+        {
+            if (player.getName().equalsIgnoreCase(name))
+            {
                 return player;
             }
         }
 
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            if (player.getName().toLowerCase().startsWith(name.toLowerCase())) {
+        for (Player player : Bukkit.getOnlinePlayers())
+        {
+            if (player.getName().toLowerCase().startsWith(name.toLowerCase()))
+            {
                 return player;
             }
         }
 
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            if (player.getName().toLowerCase().contains(name.toLowerCase())) {
+        for (Player player : Bukkit.getOnlinePlayers())
+        {
+            if (player.getName().toLowerCase().contains(name.toLowerCase()))
+            {
                 return player;
             }
         }
 
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            if (ChatColor.stripColor(player.getDisplayName()).equalsIgnoreCase(name)) {
+        for (Player player : Bukkit.getOnlinePlayers())
+        {
+            if (ChatColor.stripColor(player.getDisplayName()).equalsIgnoreCase(name))
+            {
                 return player;
             }
         }
 
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            if (ChatColor.stripColor(player.getDisplayName()).toLowerCase().contains(name.toLowerCase())) {
+        for (Player player : Bukkit.getOnlinePlayers())
+        {
+            if (ChatColor.stripColor(player.getDisplayName()).toLowerCase().contains(name.toLowerCase()))
+            {
                 return player;
             }
         }
@@ -95,11 +111,13 @@ public class Players {
      * Attempts to resolve a player (online or offline) by a partial name.
      *
      * <p>
-     * Uses {@link #getOfflinePlayer(String, boolean)} with the second parameter as true.</p>
+     * Uses {@link #getOfflinePlayer(String, boolean)} with the second parameter
+     * as true.</p>
      *
      * @see #getOfflinePlayer(String)
      */
-    public static OfflinePlayer getOfflinePlayer(String name) {
+    public static OfflinePlayer getOfflinePlayer(String name)
+    {
         return getOfflinePlayer(name, true);
     }
 
@@ -116,17 +134,22 @@ public class Players {
      * @param onlineCheck If true, the online players will be matched first.
      * @return The player. If the player could not be found, null.
      */
-    public static OfflinePlayer getOfflinePlayer(String name, boolean onlineCheck) {
-        if (onlineCheck) {
+    public static OfflinePlayer getOfflinePlayer(String name, boolean onlineCheck)
+    {
+        if (onlineCheck)
+        {
             OfflinePlayer player = getPlayer(name);
 
-            if (player != null) {
+            if (player != null)
+            {
                 return player;
             }
         }
 
-        for (OfflinePlayer offlinePlayer : Bukkit.getOfflinePlayers()) {
-            if (offlinePlayer.getName().equalsIgnoreCase(name)) {
+        for (OfflinePlayer offlinePlayer : Bukkit.getOfflinePlayers())
+        {
+            if (offlinePlayer.getName().equalsIgnoreCase(name))
+            {
                 return offlinePlayer;
             }
         }
@@ -146,40 +169,48 @@ public class Players {
      * @param players The players to concatenate.
      * @return The resulting String.
      */
-    public static String concatPlayerNames(Collection<OfflinePlayer> players) {
+    public static String concatPlayerNames(Collection<OfflinePlayer> players)
+    {
         List<String> names = new ArrayList<String>();
-        for (OfflinePlayer player : players) {
+        for (OfflinePlayer player : players)
+        {
             names.add(player.getName());
         }
         return concatPlayernames(names);
     }
 
-    public static String concatPlayernames(Collection<String> names) {
+    public static String concatPlayernames(Collection<String> names)
+    {
         return StringUtils.join(names, ", ");
     }
 
     /**
-     * Returns the location an entity is pointing at in a 300 block range or null if there is no solid block in the entity's range.
+     * Returns the location an entity is pointing at in a 300 block range or
+     * null if there is no solid block in the entity's range.
      *
      * @param entity The entity pointing at the location.
      * @return The location / null
      * @see #getTarget(org.bukkit.entity.LivingEntity, int)
      */
-    public static Location getTarget(LivingEntity entity) {
+    public static Location getTarget(LivingEntity entity)
+    {
         return getTarget(entity, 300);
     }
 
     /**
-     * Returns the location an entity is pointing at in the specified range or null if there is no solid block in the entity's range.
+     * Returns the location an entity is pointing at in the specified range or
+     * null if there is no solid block in the entity's range.
      *
      * @param entity The entity pointing at the location.
      * @param range The maximum range a location can be at
      * @return The location / null
      */
-    public static Location getTarget(LivingEntity entity, int range) {
+    public static Location getTarget(LivingEntity entity, int range)
+    {
         @SuppressWarnings("deprecation")
         final Block block = entity.getTargetBlock(Materials.TRANSPARENT_MATERIALS, range);
-        if (block == null) {
+        if (block == null)
+        {
             return null;
         }
         return block.getLocation();

@@ -15,7 +15,8 @@
  */
 package net.pravian.aero.component.service;
 
-public interface Service {
+public interface Service
+{
 
     public void start();
 

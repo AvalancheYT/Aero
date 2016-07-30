@@ -21,244 +21,292 @@ import org.bukkit.plugin.Plugin;
  * @author bergerkiller
  */
 @SuppressWarnings("deprecation")
-public class BlockProxy extends ProxyBase<Block> implements Block {
+public class BlockProxy extends ProxyBase<Block> implements Block
+{
 
     /**
      * Creates a new BlockProxy instance.
      *
      * @param base The proxy base.
      */
-    public BlockProxy(Block base) {
+    public BlockProxy(Block base)
+    {
         super(base);
     }
 
     @Override
-    public World getWorld() {
+    public World getWorld()
+    {
         return base.getWorld();
     }
 
     @Override
-    public Location getLocation() {
+    public Location getLocation()
+    {
         return base.getLocation();
     }
 
     @Override
-    public Location getLocation(Location loc) {
+    public Location getLocation(Location loc)
+    {
         return base.getLocation(loc);
     }
 
     @Override
-    public int getX() {
+    public int getX()
+    {
         return base.getX();
     }
 
     @Override
-    public int getY() {
+    public int getY()
+    {
         return base.getY();
     }
 
     @Override
-    public int getZ() {
+    public int getZ()
+    {
         return base.getZ();
     }
 
     @Override
-    public Chunk getChunk() {
+    public Chunk getChunk()
+    {
         return base.getChunk();
     }
 
     @Override
-    public void setData(final byte data) {
+    public void setData(final byte data)
+    {
         base.setData(data);
     }
 
     @Override
-    public void setData(final byte data, boolean applyPhysics) {
+    public void setData(final byte data, boolean applyPhysics)
+    {
         base.setData(data, applyPhysics);
     }
 
     @Override
-    public byte getData() {
+    public byte getData()
+    {
         return base.getData();
     }
 
     @Override
-    public void setType(final Material type) {
+    public void setType(final Material type)
+    {
         base.setType(type);
     }
 
     @Override
-    public boolean setTypeId(final int type) {
+    public boolean setTypeId(final int type)
+    {
         return base.setTypeId(type);
     }
 
     @Override
-    public boolean setTypeId(final int type, final boolean applyPhysics) {
+    public boolean setTypeId(final int type, final boolean applyPhysics)
+    {
         return base.setTypeId(type, applyPhysics);
     }
 
     @Override
-    public boolean setTypeIdAndData(final int type, final byte data, final boolean applyPhysics) {
+    public boolean setTypeIdAndData(final int type, final byte data, final boolean applyPhysics)
+    {
         return base.setTypeIdAndData(type, data, applyPhysics);
     }
 
     @Override
-    public Material getType() {
+    public Material getType()
+    {
         return base.getType();
     }
 
     @Override
-    public int getTypeId() {
+    public int getTypeId()
+    {
         return base.getTypeId();
     }
 
     @Override
-    public byte getLightLevel() {
+    public byte getLightLevel()
+    {
         return base.getLightLevel();
     }
 
     @Override
-    public byte getLightFromSky() {
+    public byte getLightFromSky()
+    {
         return base.getLightFromSky();
     }
 
     @Override
-    public byte getLightFromBlocks() {
+    public byte getLightFromBlocks()
+    {
         return base.getLightFromBlocks();
     }
 
     @Override
-    public Block getRelative(final int modX, final int modY, final int modZ) {
+    public Block getRelative(final int modX, final int modY, final int modZ)
+    {
         return base.getRelative(modX, modY, modZ);
     }
 
     @Override
-    public Block getRelative(BlockFace face) {
+    public Block getRelative(BlockFace face)
+    {
         return base.getRelative(face);
     }
 
     @Override
-    public Block getRelative(BlockFace face, int distance) {
+    public Block getRelative(BlockFace face, int distance)
+    {
         return base.getRelative(face, distance);
     }
 
     @Override
-    public BlockFace getFace(final Block block) {
+    public BlockFace getFace(final Block block)
+    {
         return base.getFace(block);
     }
 
     @Override
-    public BlockState getState() {
+    public BlockState getState()
+    {
         return base.getState();
     }
 
     @Override
-    public Biome getBiome() {
+    public Biome getBiome()
+    {
         return base.getBiome();
     }
 
     @Override
-    public void setBiome(Biome bio) {
+    public void setBiome(Biome bio)
+    {
         base.setBiome(bio);
     }
 
     @Override
-    public double getTemperature() {
+    public double getTemperature()
+    {
         return base.getTemperature();
     }
 
     @Override
-    public double getHumidity() {
+    public double getHumidity()
+    {
         return base.getHumidity();
     }
 
     @Override
-    public boolean isBlockPowered() {
+    public boolean isBlockPowered()
+    {
         return base.isBlockPowered();
     }
 
     @Override
-    public boolean isBlockIndirectlyPowered() {
+    public boolean isBlockIndirectlyPowered()
+    {
         return base.isBlockIndirectlyPowered();
     }
 
     @Override
-    public boolean isBlockFacePowered(BlockFace face) {
+    public boolean isBlockFacePowered(BlockFace face)
+    {
         return base.isBlockFacePowered(face);
     }
 
     @Override
-    public boolean isBlockFaceIndirectlyPowered(BlockFace face) {
+    public boolean isBlockFaceIndirectlyPowered(BlockFace face)
+    {
         return base.isBlockFaceIndirectlyPowered(face);
     }
 
     @Override
-    public int getBlockPower(BlockFace face) {
+    public int getBlockPower(BlockFace face)
+    {
         return base.getBlockPower(face);
     }
 
     @Override
-    public int getBlockPower() {
+    public int getBlockPower()
+    {
         return base.getBlockPower();
     }
 
     @Override
-    public boolean isEmpty() {
+    public boolean isEmpty()
+    {
         return base.isEmpty();
     }
 
     @Override
-    public boolean isLiquid() {
+    public boolean isLiquid()
+    {
         return base.isLiquid();
     }
 
     @Override
-    public PistonMoveReaction getPistonMoveReaction() {
+    public PistonMoveReaction getPistonMoveReaction()
+    {
         return base.getPistonMoveReaction();
     }
 
     @Override
-    public boolean breakNaturally() {
+    public boolean breakNaturally()
+    {
         return base.breakNaturally();
     }
 
     @Override
-    public boolean breakNaturally(ItemStack item) {
+    public boolean breakNaturally(ItemStack item)
+    {
         return base.breakNaturally(item);
     }
 
     @Override
-    public Collection<ItemStack> getDrops() {
+    public Collection<ItemStack> getDrops()
+    {
         return base.getDrops();
     }
 
     @Override
-    public Collection<ItemStack> getDrops(ItemStack item) {
+    public Collection<ItemStack> getDrops(ItemStack item)
+    {
         return base.getDrops(item);
     }
 
     @Override
-    public void setMetadata(String metadataKey, MetadataValue newMetadataValue) {
+    public void setMetadata(String metadataKey, MetadataValue newMetadataValue)
+    {
         base.setMetadata(metadataKey, newMetadataValue);
     }
 
     @Override
-    public List<MetadataValue> getMetadata(String metadataKey) {
+    public List<MetadataValue> getMetadata(String metadataKey)
+    {
         return base.getMetadata(metadataKey);
     }
 
     @Override
-    public boolean hasMetadata(String metadataKey) {
+    public boolean hasMetadata(String metadataKey)
+    {
         return base.hasMetadata(metadataKey);
     }
 
     @Override
-    public void removeMetadata(String metadataKey, Plugin owningPlugin) {
+    public void removeMetadata(String metadataKey, Plugin owningPlugin)
+    {
         base.removeMetadata(metadataKey, owningPlugin);
     }
 
     @Override
-    public void setType(Material mtrl, boolean bln) {
+    public void setType(Material mtrl, boolean bln)
+    {
         base.setType(mtrl);
     }
 }

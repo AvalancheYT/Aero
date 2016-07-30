@@ -11,99 +11,118 @@ import org.bukkit.plugin.Plugin;
 /**
  * Represents a proxy for an inventory.
  */
-public class CommandSenderProxy extends ProxyBase<CommandSender> implements CommandSender {
+public class CommandSenderProxy extends ProxyBase<CommandSender> implements CommandSender
+{
 
     /**
      * Creates a new CommandSenderProxy instance.
      *
      * @param base The proxy base.
      */
-    public CommandSenderProxy(CommandSender base) {
+    public CommandSenderProxy(CommandSender base)
+    {
         super(base);
     }
 
     @Override
-    public void sendMessage(String string) {
+    public void sendMessage(String string)
+    {
         base.sendMessage(string);
     }
 
     @Override
-    public void sendMessage(String[] strings) {
+    public void sendMessage(String[] strings)
+    {
         base.sendMessage(strings);
     }
 
     @Override
-    public Server getServer() {
+    public Server getServer()
+    {
         return base.getServer();
     }
 
     @Override
-    public String getName() {
+    public String getName()
+    {
         return base.getName();
     }
 
     @Override
-    public boolean isPermissionSet(String string) {
+    public boolean isPermissionSet(String string)
+    {
         return base.isPermissionSet(string);
     }
 
     @Override
-    public boolean isPermissionSet(Permission prmsn) {
+    public boolean isPermissionSet(Permission prmsn)
+    {
         return base.isPermissionSet(prmsn);
     }
 
     @Override
-    public boolean hasPermission(String string) {
+    public boolean hasPermission(String string)
+    {
         return base.hasPermission(string);
     }
 
     @Override
-    public boolean hasPermission(Permission prmsn) {
+    public boolean hasPermission(Permission prmsn)
+    {
         return base.hasPermission(prmsn);
     }
 
     @Override
-    public PermissionAttachment addAttachment(Plugin plugin, String string, boolean bln) {
+    public PermissionAttachment addAttachment(Plugin plugin, String string, boolean bln)
+    {
         return base.addAttachment(plugin, string, bln);
     }
 
     @Override
-    public PermissionAttachment addAttachment(Plugin plugin) {
+    public PermissionAttachment addAttachment(Plugin plugin)
+    {
         return base.addAttachment(plugin);
     }
 
     @Override
-    public PermissionAttachment addAttachment(Plugin plugin, String string, boolean bln, int i) {
+    public PermissionAttachment addAttachment(Plugin plugin, String string, boolean bln, int i)
+    {
         return base.addAttachment(plugin, string, bln, i);
     }
 
     @Override
-    public PermissionAttachment addAttachment(Plugin plugin, int i) {
+    public PermissionAttachment addAttachment(Plugin plugin, int i)
+    {
         return base.addAttachment(plugin, i);
     }
 
     @Override
-    public void removeAttachment(PermissionAttachment pa) {
+    public void removeAttachment(PermissionAttachment pa)
+    {
         base.removeAttachment(pa);
     }
 
     @Override
-    public void recalculatePermissions() {
+    public void recalculatePermissions()
+    {
         base.recalculatePermissions();
     }
 
     @Override
-    public Set<PermissionAttachmentInfo> getEffectivePermissions() {
+    public Set<PermissionAttachmentInfo> getEffectivePermissions()
+    {
         return base.getEffectivePermissions();
     }
 
     @Override
-    public boolean isOp() {
+    public boolean isOp()
+    {
         return base.isOp();
     }
 
     @Override
-    public void setOp(boolean bln) {
+    public void setOp(boolean bln)
+    {
         base.setOp(bln);
     }
 }

@@ -15,7 +15,8 @@
  */
 package net.pravian.aero.base;
 
-public interface Registrable {
+public interface Registrable
+{
 
     public void register();
 
